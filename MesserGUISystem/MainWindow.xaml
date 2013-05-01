@@ -1,0 +1,39 @@
+﻿<Window x:Class="MesserGUISystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MesserGuiSystem" Width="1024" Height="768"  Background="DarkGray">
+    <DockPanel Background="DarkGray">
+        <Menu Height="23" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" DockPanel.Dock="Top" MinWidth="200">
+            <MenuItem Header="File">
+                <MenuItem Header="Save" />
+                <MenuItem Header="Load" />
+                <MenuItem Header="Exit" />
+            </MenuItem>
+        </Menu>
+        <StackPanel DockPanel.Dock="Left" MinHeight="100" MinWidth="100">
+            <Label Content="Tools" HorizontalContentAlignment="Center" FontSize="8" Padding="1" Background="#FF777777" />
+            <StackPanel Orientation="Horizontal" MinWidth="150">
+                <Button Content="Move" Height="23" Name="moveTool" Width="75" Click="moveTool_Click" />
+                <Button Content="Resize" Height="23" Name="resizeTool" Width="75" Click="resizeTool_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" MinWidth="150">
+                <Button Content="Rectangle" Height="23" Name="createRectangle" Width="75" Click="createRectangle_Click" />
+                <Button Content="Ellipse" Height="23" Name="createEllipse" Width="75" Click="createEllipse_click"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel MinHeight="100" MinWidth="100" DockPanel.Dock="Right" VerticalAlignment="Stretch">
+            <Label Content="Library Items" HorizontalContentAlignment="Center" FontSize="8" Padding="0" Background="#FF777777" />
+            <ListBox Name="libraryItems" MinWidth="120" MinHeight="120" VerticalAlignment="Stretch">
+            </ListBox>
+        </StackPanel>
+        <Canvas DockPanel.Dock="Top" MinHeight="100" Background="AliceBlue">
+            <Label Content="Timeline" Height="23" />
+        </Canvas>
+        <Label DockPanel.Dock="Top" Content="Stage > foo > bar > something > aewsome > asdf > placeholder" Height="20" Name="hierarchyChart" Padding="5,1,1,1" Background="#FCFCFC" BorderBrush="Black" BorderThickness="1"/>
+
+        <Canvas Name="stage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="200" MinHeight="200" Panel.ZIndex="10" Background="#FCFCFC" MouseDown="canvas_mouseDown" MouseUp="canvas_mouseUp">
+            
+        </Canvas>
+        
+    </DockPanel>
+</Window>
