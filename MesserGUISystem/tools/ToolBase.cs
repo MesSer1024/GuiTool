@@ -7,8 +7,8 @@ using System.Windows.Input;
 
 namespace MesserGUISystem.tools {
     class ToolBase : ITool {
-        public ToolBase() {
-            type = utils.Globals.Tools.None;
+        public ToolBase(Globals.Tools toolType = Globals.Tools.None) {
+            type = toolType;
         }
         public MesserGUISystem.utils.Globals.Tools type { protected set; get; }
 

@@ -56,10 +56,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="logic\Controller.cs" />
+    <Compile Include="logic\IObserver.cs" />
+    <Compile Include="logic\PropertyWindow.cs" />
     <Compile Include="tools\EllipseTool.cs" />
     <Compile Include="tools\MoveTool.cs" />
+    <Compile Include="tools\SelectTool.cs" />
     <Compile Include="tools\RectangleTool.cs" />
     <Compile Include="tools\ITool.cs" />
+    <Compile Include="tools\TextTool.cs" />
     <Compile Include="tools\ToolBase.cs" />
     <Compile Include="utils\Globals.cs" />
     <Compile Include="utils\Logger.cs" />
@@ -99,6 +103,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="wpf_magic\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

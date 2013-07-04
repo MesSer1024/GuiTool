@@ -16,15 +16,15 @@ namespace MesserGUISystem.tools {
         private Rectangle _rectangle;
         private SolidColorBrush _solidColorBrush;
 
-        public RectangleTool() {
-            type = utils.Globals.Tools.Rectangle;
+        public RectangleTool()
+            : base(utils.Globals.Tools.Rectangle) {
         }
 
         public override void lmbBegin(Point point) {
             _startPosition = point;
             _current = point;
             _rectangle = new Rectangle();
-            MainWindow.Stage.Children.Add(_rectangle);
+            MainWindow.addItem(_rectangle);
             _solidColorBrush = new SolidColorBrush();
             _solidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
             _rectangle.Fill = _solidColorBrush;

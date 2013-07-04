@@ -10,12 +10,18 @@ using MesserGUISystem.utils;
 using System.Windows.Media;
 
 namespace MesserGUISystem.logic {
-    class Controller {
+    public class Controller {
         private MainWindow _view;
         private Canvas _stage;
         private ITool _currentTool;
         private static Controller _instance;
+
+        public static Controller Instance {
+            get { return Controller._instance; }
+        }
         private Controller(){}
+
+        private static List<IObserver> _observers = new List<IObserver>();
 
         public static double stageX {
             get {return 0;}
@@ -42,10 +48,12 @@ namespace MesserGUISystem.logic {
             RESIZE_TOOL,
             RECTANGLE_TOOL,
             ELLIPSE_TOOL,
-            CANVAS_LMB_DOWN,
-            CANVAS_LMB_RELEASE,
-            CANVAS_LMB_DOWN_MOVED,
+            LMB_DOWN,
+            LMB_RELEASE,
+            LMB_DOWN_MOUSE_MOVED,
             OBJECT_CLICKED,
+            MOVE_ITEM_BEGIN,
+            MOVE_ITEM_END,
 
         }
 
@@ -54,19 +62,24 @@ namespace MesserGUISystem.logic {
             if (Globals.anyEquals(e.Key, Key.Oem5, Key.OemTilde)) {
                 Console.Write(Logger.flush());
             } else {
+                Button btn = null;
                 switch (e.Key) {
                     case Key.V:
-                        _instance._view.moveTool.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));                        
+                        btn = _instance._view.moveTool;
                         break;
                     case Key.Q:
-                        _instance._view.resizeTool.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));                        
+                        btn = _instance._view.resizeTool;
                         break;
                     case Key.R:
-                        _instance._view.createRectangle.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));                        
+                        btn = _instance._view.createRectangle;
                         break;
                     case Key.E:
-                        _instance._view.createEllipse.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));                        
+                        btn = _instance._view.createEllipse;
                         break;
+                }
+                if (btn != null) {
+                    btn.Focus();
+                    btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 }
             }
         }
@@ -85,14 +98,14 @@ namespace MesserGUISystem.logic {
                 case UserActions.ELLIPSE_TOOL:
                     _instance.ellipseToolClicked();
                     break;
-                case UserActions.CANVAS_LMB_DOWN:
-                    _instance.canvasLmbDown(e as MouseEventArgs);
+                case UserActions.LMB_DOWN:
+                    _instance.lmbDown(e as MouseEventArgs);
                     break;
-                case UserActions.CANVAS_LMB_RELEASE:
-                    _instance.canvasLmbRelease(e as MouseEventArgs);
+                case UserActions.LMB_RELEASE:
+                    _instance.lmbRelease(e as MouseEventArgs);
                     break;
-                case UserActions.CANVAS_LMB_DOWN_MOVED:
-                    _instance.canvasLmbDownMoved(e as MouseEventArgs);
+                case UserActions.LMB_DOWN_MOUSE_MOVED:
+                    _instance.lmbDownMoved(e as MouseEventArgs);
                     break;
                 case UserActions.OBJECT_CLICKED:
                     _instance.onObjectSelected(e as UIElement);
@@ -101,6 +114,13 @@ namespace MesserGUISystem.logic {
                     Logger.error("Unhandled action:" + action);
                     break;
             }
+            foreach (var i in _observers) {
+                i.onMessage(action, e);
+            }
+        }
+
+        public void addObserver(IObserver o) {
+            _observers.Add(o);
         }
 
         private void moveToolClicked() {
@@ -124,26 +144,23 @@ namespace MesserGUISystem.logic {
             Mouse.OverrideCursor = _currentTool.getCursor();
         }
 
-        private void canvasLmbDown(MouseEventArgs e) {
+        private void lmbDown(MouseEventArgs e) {
+            _stage.CaptureMouse();
             _currentTool.lmbBegin(e.GetPosition(_stage));
         }
 
-        private void canvasLmbRelease(MouseEventArgs e) {
+        private void lmbRelease(MouseEventArgs e) {
+            _stage.ReleaseMouseCapture();
             _currentTool.lmbEnd(e.GetPosition(_stage));
         }
 
-        private void canvasLmbDownMoved(MouseEventArgs e) {
+        private void lmbDownMoved(MouseEventArgs e) {
             _currentTool.lmb(e.GetPosition(_stage));
         }
 
         private void onObjectSelected(UIElement element) {
-            if (element == null) {
-                //deselect stuff
-            } else {
-
-            }
+            //element.AllowDrop = true;
         }
-
 
         internal static void initialize(MainWindow view, Canvas stage) {
             if (_instance != null)

@@ -16,15 +16,16 @@ namespace MesserGUISystem.tools {
         private Ellipse _ellipse;
         private SolidColorBrush _solidColorBrush;
 
-        public EllipseTool() {
-            type = utils.Globals.Tools.Ellipse;
+        public EllipseTool()
+            : base(utils.Globals.Tools.Ellipse) {
+
         }
 
         public override void lmbBegin(Point point) {
             _startPosition = point;
             _current = point;
             _ellipse = new Ellipse();
-            MainWindow.Stage.Children.Add(_ellipse);
+            MainWindow.addItem(_ellipse);
             _solidColorBrush = new SolidColorBrush();
             _solidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
             _ellipse.Fill = _solidColorBrush;
