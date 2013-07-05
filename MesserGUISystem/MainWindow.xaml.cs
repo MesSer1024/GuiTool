@@ -48,12 +48,12 @@ namespace MesserGUISystem {
 
         public MainWindow() {
             InitializeComponent();
+            utils.Globals.Stage = this;
             Stage = stage;
             //Canvas.SetZIndex(stage, int.MinValue);
             Controller.initialize(this, stage);
             this.MouseMove += onMouseMove;            
-            _propertyWindow = new PropertyWindow(this);
-            Controller.Instance.addObserver(_propertyWindow);
+            _propertyWindow = new PropertyWindow(this.properyWindow);
             _history = new HistoryManager();
         }
 

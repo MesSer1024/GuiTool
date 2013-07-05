@@ -142,6 +142,7 @@ namespace MesserGUISystem.logic {
 
                         DependencyObject scope = FocusManager.GetFocusScope(textBox);
                         FocusManager.SetFocusedElement(scope, parent as IInputElement);
+                        handle(UserActions.USER_REFRESH_PROPERTIES);
                     }
                     break;
                 default:

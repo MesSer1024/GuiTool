@@ -17,22 +17,34 @@ namespace MesserGUISystem.logic {
         private UIElement _selectedItem;
         private MainWindow _stage;
         private Timer _timer;
+        private MesserControlsLibrary.UserControl1 userControl1;
 
         public PropertyWindow(MainWindow stage) {
             _stage = stage;
-            _stage._myPropertyWindow.Visibility = Visibility.Hidden;
-            _stage.positionX.PreviewKeyDown += positionX_PreviewKeyDown;
-            _stage.positionY.PreviewKeyDown += positionX_PreviewKeyDown;
-            _stage.SizeX.PreviewKeyDown += positionX_PreviewKeyDown;
-            _stage.SizeY.PreviewKeyDown += positionX_PreviewKeyDown;
 
-            _stage.positionX.LostMouseCapture += onLostFocus;
-            _stage.positionY.LostMouseCapture += onLostFocus;
-            _stage.SizeX.LostMouseCapture += onLostFocus;
-            _stage.SizeY.LostMouseCapture += onLostFocus;
+            //_stage._myPropertyWindow.Visibility = Visibility.Hidden;
+            //_stage.positionX.PreviewKeyDown += positionX_PreviewKeyDown;
+            //_stage.positionY.PreviewKeyDown += positionX_PreviewKeyDown;
+            //_stage.SizeX.PreviewKeyDown += positionX_PreviewKeyDown;
+            //_stage.SizeY.PreviewKeyDown += positionX_PreviewKeyDown;
+
+            //_stage.positionX.LostMouseCapture += onLostFocus;
+            //_stage.positionY.LostMouseCapture += onLostFocus;
+            //_stage.SizeX.LostMouseCapture += onLostFocus;
+            //_stage.SizeY.LostMouseCapture += onLostFocus;
 
             _timer = new Timer(10);
             _timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+            Controller.Instance.addObserver(this);
+        }
+
+        public PropertyWindow(MesserControlsLibrary.UserControl1 userControl1) {
+            // TODO: Complete member initialization
+            this.userControl1 = userControl1;
+        }
+
+        ~PropertyWindow() {
+            Controller.Instance.removeObserver(this);
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e) {
@@ -56,17 +68,17 @@ namespace MesserGUISystem.logic {
 
         private void updateModel() {            
             try {
-                var x = Convert.ToDouble(_stage.positionX.Text);
-                var y = Convert.ToDouble(_stage.positionY.Text);
-                var w = Convert.ToDouble(_stage.SizeX.Text);
-                var h = Convert.ToDouble(_stage.SizeY.Text);
+                //var x = Convert.ToDouble(_stage.positionX.Text);
+                //var y = Convert.ToDouble(_stage.positionY.Text);
+                //var w = Convert.ToDouble(_stage.SizeX.Text);
+                //var h = Convert.ToDouble(_stage.SizeY.Text);
 
                 var foo = _selectedItem as Shape;
                 var pos = VisualTreeHelper.GetOffset(foo);
                 var original = new Bounds(pos.X, pos.Y, foo.Width, foo.Height);
-                var target = new Bounds(x, y, w, h);
+                //var target = new Bounds(x, y, w, h);
 
-                Controller.handle(new ResizeItemCommand(foo, original, target));
+                //Controller.handle(new ResizeItemCommand(foo, original, target));
 
             } catch (Exception e) {
                 return;
@@ -76,16 +88,16 @@ namespace MesserGUISystem.logic {
         private void updateView() {
             if (utils.Globals.isValidObject(_selectedItem)) {
                 updateUi(() => {
-                    _stage._myPropertyWindow.Visibility = Visibility.Visible;
+                    //_stage._myPropertyWindow.Visibility = Visibility.Visible;
 
                     var foo = VisualTreeHelper.GetOffset(_selectedItem);
-                    _stage.SizeX.Text = _selectedItem.RenderSize.Width.ToString();
-                    _stage.SizeY.Text = _selectedItem.RenderSize.Height.ToString();
-                    _stage.positionX.Text = foo.X.ToString();
-                    _stage.positionY.Text = foo.Y.ToString();
+                    //_stage.SizeX.Text = _selectedItem.RenderSize.Width.ToString();
+                    //_stage.SizeY.Text = _selectedItem.RenderSize.Height.ToString();
+                    //_stage.positionX.Text = foo.X.ToString();
+                    //_stage.positionY.Text = foo.Y.ToString();
                 });
             } else {
-                updateUi(() => { _stage._myPropertyWindow.Visibility = Visibility.Hidden; });
+                //updateUi(() => { _stage._myPropertyWindow.Visibility = Visibility.Hidden; });
             }
         }
 

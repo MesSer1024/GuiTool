@@ -32,5 +32,7 @@ namespace MesserGUISystem.utils {
         public static bool isBigger(dynamic value, dynamic trueIfSmaller) {
             return Math.Abs(value) > Math.Abs(trueIfSmaller);
         }
+
+        public static MainWindow Stage { get; set; }
     }
 }
