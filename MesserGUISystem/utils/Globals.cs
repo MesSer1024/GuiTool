@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
+using MesserGUISystem.commands;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace MesserGUISystem.utils {
     public static class Globals {
@@ -26,13 +30,23 @@ namespace MesserGUISystem.utils {
         }
 
         public static bool isValidObject(object e) {
-            return e != null && e != MainWindow.Stage && e != MainWindow.Stage && e is UIElement;
+            return e != null && e != Stage.Area && e is UIElement;
         }
 
         public static bool isBigger(dynamic value, dynamic trueIfSmaller) {
             return Math.Abs(value) > Math.Abs(trueIfSmaller);
         }
 
-        public static MainWindow Stage { get; set; }
+        public static void updateUi(Action fn) {
+            Stage.Area.Dispatcher.Invoke(fn);
+        }
+
+        public static Bounds getBounds(UIElement ele) {
+            var foo = ele as Shape;
+            var pos = VisualTreeHelper.GetOffset(ele);
+            Assert.True(foo);
+
+            return new Bounds(pos.X, pos.Y, foo.Width, foo.Height);
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace MesserGUISystem.tools {
         private UIElement _currentlyDraggedObject;
         private bool _limbo;
         private SolidColorBrush _solidColorBrush;
-        private Rectangle _tmpRectangle; 
+        private Shape _tmpShapeCopy; 
 
         public MoveTool() {
             type = utils.Globals.Tools.Move;
@@ -28,7 +28,7 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmbBegin(Point point) {
-            var foo = MainWindow.Stage.InputHitTest(point);
+            var foo = Stage.HittestItems(point);
             if (utils.Globals.isValidObject(foo)) {
                 removeTemporaryObject();
                 _currentlyDraggedObject = foo as UIElement;
@@ -54,20 +54,21 @@ namespace MesserGUISystem.tools {
                     //create a copy...
                     _solidColorBrush = new SolidColorBrush();
                     _solidColorBrush.Color = Color.FromArgb(45, 35, 35, 35);
-                    _tmpRectangle = new Rectangle();
-                    _tmpRectangle.Fill = _solidColorBrush;
-                    _tmpRectangle.StrokeThickness = 1;
-                    _tmpRectangle.Stroke = Brushes.LightGray;
+                    _tmpShapeCopy = cloneObject(_currentlyDraggedObject);
+                    _tmpShapeCopy.Fill = _solidColorBrush;
+                    _tmpShapeCopy.StrokeThickness = 1;
+                    _tmpShapeCopy.Stroke = Brushes.LightGray;
                     var size = VisualTreeHelper.GetContentBounds(_currentlyDraggedObject);
                     var offset = VisualTreeHelper.GetOffset(_currentlyDraggedObject);
 
-                    _tmpRectangle.Width = size.Width;
-                    _tmpRectangle.Height = size.Height;
-                    Canvas.SetLeft(_tmpRectangle, offset.X);
-                    Canvas.SetTop(_tmpRectangle, offset.Y);
+                    _tmpShapeCopy.Width = size.Width;
+                    _tmpShapeCopy.Height = size.Height;
+                    Canvas.SetLeft(_tmpShapeCopy, offset.X);
+                    Canvas.SetTop(_tmpShapeCopy, offset.Y);
 
-                    MainWindow.addItem(_tmpRectangle);
-                    Canvas.SetZIndex(_tmpRectangle, int.MinValue);
+                    Stage.addItem(_tmpShapeCopy);
+                    var foo = Canvas.GetZIndex(_currentlyDraggedObject);
+                    Canvas.SetZIndex(_tmpShapeCopy, Canvas.GetZIndex(_currentlyDraggedObject) - 1);
 
                     Controller.handle(Controller.UserActions.MOVE_ITEM_BEGIN, _currentlyDraggedObject as UIElement);
 
@@ -95,6 +96,17 @@ namespace MesserGUISystem.tools {
             }
         }
 
+        private Shape cloneObject(UIElement used) {
+            if (used is Rectangle) {
+                return new Rectangle();
+            } else if (used is Ellipse) {
+                return new Ellipse();
+            } else {
+                Logger.error(String.Format("unknown type: {0}", used));
+                throw new Exception("Unknown type");
+            }
+        }
+
         private double clamp(dynamic value, dynamic min, dynamic max) {
             return Math.Max(Math.Min(max, value), min);
         }
@@ -113,10 +125,10 @@ namespace MesserGUISystem.tools {
 
         private void removeTemporaryObject()
         {
-            if (_tmpRectangle != null)
+            if (_tmpShapeCopy != null)
             {
-                MainWindow.removeItem(_tmpRectangle);
-                _tmpRectangle = null;
+                Stage.removeItem(_tmpShapeCopy);
+                _tmpShapeCopy = null;
             }
         }
 

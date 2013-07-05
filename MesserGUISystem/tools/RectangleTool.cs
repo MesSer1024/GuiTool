@@ -21,10 +21,12 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmbBegin(Point point) {
+            if (_rectangle != null)
+                return;
             _startPosition = point;
             _current = point;
             _rectangle = new Rectangle();
-            MainWindow.addItem(_rectangle);
+            Stage.addItem(_rectangle);
             _solidColorBrush = new SolidColorBrush();
             _solidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
             _rectangle.Fill = _solidColorBrush;

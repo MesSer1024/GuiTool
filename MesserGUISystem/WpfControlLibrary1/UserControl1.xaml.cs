@@ -11,12 +11,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace MesserControlsLibrary {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
     public partial class UserControl1 : UserControl {
+        public delegate void PropertyWindowDelegate(object sender);
+        public delegate void ConceptPressedDelegate(object sender, KeyEventArgs e);
+        public event ConceptPressedDelegate OnConceptButtonPressedInTextbox;
+        public event PropertyWindowDelegate OnMouseFocusLostFromTextbox;
         
         public UserControl1() {
             InitializeComponent();
@@ -24,7 +29,34 @@ namespace MesserControlsLibrary {
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
+            e.Handled = !IsNumerics(e.Text);
+        }
 
+        private void positionX_PreviewKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter || e.Key == Key.Escape) {
+                if (OnConceptButtonPressedInTextbox != null) {
+                    OnConceptButtonPressedInTextbox.Invoke(sender, e);
+                }
+                //updateModel();
+            }
+        }
+
+        private void positionX_LostMouseCapture(object sender, MouseEventArgs e) {
+            if (OnMouseFocusLostFromTextbox != null) {
+                OnMouseFocusLostFromTextbox.Invoke(sender);
+                //e.Handled = true;
+            }
+        }
+
+        private static bool IsNumerics(string text) {
+            Regex regex = new Regex("[0-9,.]+");
+            if (regex.IsMatch(text)) {
+                double r = 0;
+                if (Double.TryParse(text, out r)) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static readonly DependencyProperty PosPropertyX = DependencyProperty.Register("PositionX", typeof(double), typeof(UserControl1), new PropertyMetadata(0d));
@@ -50,6 +82,22 @@ namespace MesserControlsLibrary {
         public double SizeY {
             get { return (double)GetValue(SizePropertyY); }
             set { SetValue(SizePropertyY, value); }
+        }
+
+        public double PositionX_text {
+            get { return Convert.ToDouble(this.positionX.Text); }
+        }
+
+        public double PositionY_text {
+            get { return Convert.ToDouble(this.positionY.Text); }
+        }
+
+        public double SizeX_text {
+            get { return Convert.ToDouble(this.sizeX.Text); }
+        }
+
+        public double SizeY_text {
+            get { return Convert.ToDouble(this.sizeY.Text); }
         }
     }
 }

@@ -22,10 +22,12 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmbBegin(Point point) {
+            if (_ellipse != null)
+                return;
             _startPosition = point;
             _current = point;
             _ellipse = new Ellipse();
-            MainWindow.addItem(_ellipse);
+            Stage.addItem(_ellipse);
             _solidColorBrush = new SolidColorBrush();
             _solidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
             _ellipse.Fill = _solidColorBrush;

@@ -21,35 +21,13 @@ namespace MesserGUISystem {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private static List<object> _items = new List<object>();
 
-        public static int getItemCount() {
-            return _items.Count;
-        }
-
-        public static Rectangle getBoxByIndex(int index) {
-            return _items[index] as Rectangle;
-        }
-
-        public static void addItem(object o) {
-            _items.Add(o);
-            Stage.Children.Add(o as UIElement);
-        }
-
-        public static void removeItem(object o) {
-            if (_items.Remove(o)) {
-                Stage.Children.Remove(o as UIElement);
-            }
-        }
-
-        public static Canvas Stage;
         private static PropertyWindow _propertyWindow;
         private static HistoryManager _history;
 
         public MainWindow() {
             InitializeComponent();
-            utils.Globals.Stage = this;
-            Stage = stage;
+            Stage.Area = this.stage;
             //Canvas.SetZIndex(stage, int.MinValue);
             Controller.initialize(this, stage);
             this.MouseMove += onMouseMove;            
@@ -108,12 +86,6 @@ namespace MesserGUISystem {
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = IsNumerics(e.Text);
-            if (Keyboard.IsKeyDown(Key.Escape))
-            {
-                Controller.handle(Controller.UserActions.USER_PRESS_ESCAPE_TEXTBOX, sender);
-                e.Handled = true;
-            }
         }
 
         private void DockPanel_LostMouseCapture(object sender, MouseEventArgs e) {

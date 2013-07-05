@@ -7,7 +7,7 @@ using MesserGUISystem.utils;
 
 namespace MesserGUISystem.commands
 {
-    class Bounds
+    public class Bounds
     {
         private double _x;
         private double _y;

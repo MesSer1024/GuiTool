@@ -13,19 +13,19 @@
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
                 <Label>PositionX:</Label>
-                <TextBox PreviewTextInput="TextBox_PreviewTextInput" Name="positionX" Text="{Binding Path=PositionX}" />
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="positionX_PreviewKeyDown" LostMouseCapture="positionX_LostMouseCapture"  Name="positionX" Text="{Binding Path=PositionX}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>PositionY:</Label>
-                <TextBox PreviewTextInput="TextBox_PreviewTextInput" Name="positionY" Text="{Binding Path=PositionY}" />
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="positionX_PreviewKeyDown" LostMouseCapture="positionX_LostMouseCapture" Name="positionY" Text="{Binding Path=PositionY}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>SizeX:</Label>
-                <TextBox PreviewTextInput="TextBox_PreviewTextInput" Name="sizeX" Text="{Binding Path=SizeX}" />
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="positionX_PreviewKeyDown" LostMouseCapture="positionX_LostMouseCapture" Name="sizeX" Text="{Binding Path=SizeX}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label>SizeY:</Label>
-                <TextBox PreviewTextInput="TextBox_PreviewTextInput" Name="sizeY" Text="{Binding Path=SizeY}" />
+                <TextBox PreviewTextInput="TextBox_PreviewTextInput" PreviewKeyDown="positionX_PreviewKeyDown" LostMouseCapture="positionX_LostMouseCapture" Name="sizeY" Text="{Binding Path=SizeY}" />
             </StackPanel>
             <Button>foo</Button>
             <Button></Button>

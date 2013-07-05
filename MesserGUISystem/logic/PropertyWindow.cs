@@ -10,75 +10,55 @@ using System.Text.RegularExpressions;
 using System.Windows.Shapes;
 using System.Timers;
 using MesserGUISystem.commands;
+using MesserControlsLibrary;
 
 namespace MesserGUISystem.logic {
     class PropertyWindow : IObserver {
 
         private UIElement _selectedItem;
-        private MainWindow _stage;
+        private UserControl1 _content;
         private Timer _timer;
-        private MesserControlsLibrary.UserControl1 userControl1;
 
-        public PropertyWindow(MainWindow stage) {
-            _stage = stage;
+        ~PropertyWindow() {
+            Controller.Instance.removeObserver(this);
+        }
 
-            //_stage._myPropertyWindow.Visibility = Visibility.Hidden;
-            //_stage.positionX.PreviewKeyDown += positionX_PreviewKeyDown;
-            //_stage.positionY.PreviewKeyDown += positionX_PreviewKeyDown;
-            //_stage.SizeX.PreviewKeyDown += positionX_PreviewKeyDown;
-            //_stage.SizeY.PreviewKeyDown += positionX_PreviewKeyDown;
-
-            //_stage.positionX.LostMouseCapture += onLostFocus;
-            //_stage.positionY.LostMouseCapture += onLostFocus;
-            //_stage.SizeX.LostMouseCapture += onLostFocus;
-            //_stage.SizeY.LostMouseCapture += onLostFocus;
+        public PropertyWindow(UserControl1 content) {
+            _content = content;
+            _content.OnConceptButtonPressedInTextbox += new UserControl1.ConceptPressedDelegate(onConceptButtonPressedInTextbox);
+            _content.OnMouseFocusLostFromTextbox += new UserControl1.PropertyWindowDelegate(onMouseFocusLostFromTextbox);
+            _content.Visibility = Visibility.Hidden;
 
             _timer = new Timer(10);
             _timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             Controller.Instance.addObserver(this);
         }
 
-        public PropertyWindow(MesserControlsLibrary.UserControl1 userControl1) {
-            // TODO: Complete member initialization
-            this.userControl1 = userControl1;
+        void onConceptButtonPressedInTextbox(object sender, KeyEventArgs e) {
+            switch (e.Key) {
+                case Key.Escape:
+                    Controller.handle(Controller.UserActions.USER_PRESS_ESCAPE_TEXTBOX, sender);
+                    break;
+                case Key.Enter:
+                    updateModelWithViewValues();
+                    break;
+            }
         }
 
-        ~PropertyWindow() {
-            Controller.Instance.removeObserver(this);
+        void onMouseFocusLostFromTextbox(object sender) {
+            updateModelWithViewValues();
         }
 
         void timer_Elapsed(object sender, ElapsedEventArgs e) {
             updateView();
         }
 
-        void onLostFocus(object sender, EventArgs e) {
-            updateModel();
-        }
-
-        void positionX_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e) {
-            if (e.Key == Key.Enter) {
-                updateModel();
-            }
-        }
-
-        private static bool isNumeric(string text) {
-            Regex regex = new Regex("[0-9]+");
-            return regex.IsMatch(text);
-        }
-
-        private void updateModel() {            
+        private void updateModelWithViewValues() {            
             try {
-                //var x = Convert.ToDouble(_stage.positionX.Text);
-                //var y = Convert.ToDouble(_stage.positionY.Text);
-                //var w = Convert.ToDouble(_stage.SizeX.Text);
-                //var h = Convert.ToDouble(_stage.SizeY.Text);
+                var original = utils.Globals.getBounds(_selectedItem);
+                var target = new Bounds(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
 
-                var foo = _selectedItem as Shape;
-                var pos = VisualTreeHelper.GetOffset(foo);
-                var original = new Bounds(pos.X, pos.Y, foo.Width, foo.Height);
-                //var target = new Bounds(x, y, w, h);
-
-                //Controller.handle(new ResizeItemCommand(foo, original, target));
+                Controller.handle(new ResizeItemCommand(_selectedItem as Shape, original, target));
 
             } catch (Exception e) {
                 return;
@@ -87,28 +67,25 @@ namespace MesserGUISystem.logic {
 
         private void updateView() {
             if (utils.Globals.isValidObject(_selectedItem)) {
-                updateUi(() => {
-                    //_stage._myPropertyWindow.Visibility = Visibility.Visible;
+                utils.Globals.updateUi(() => {
+                    _content.Visibility = Visibility.Visible;
 
                     var foo = VisualTreeHelper.GetOffset(_selectedItem);
-                    //_stage.SizeX.Text = _selectedItem.RenderSize.Width.ToString();
-                    //_stage.SizeY.Text = _selectedItem.RenderSize.Height.ToString();
-                    //_stage.positionX.Text = foo.X.ToString();
-                    //_stage.positionY.Text = foo.Y.ToString();
+                    _content.PositionX = foo.X;
+                    _content.PositionY = foo.Y;
+                    _content.SizeX = _selectedItem.RenderSize.Width;
+                    _content.SizeY = _selectedItem.RenderSize.Height;
                 });
             } else {
-                //updateUi(() => { _stage._myPropertyWindow.Visibility = Visibility.Hidden; });
+                utils.Globals.updateUi(() => { _content.Visibility = Visibility.Hidden; });
             }
-        }
-
-        public void updateUi(Action a) {
-            _stage.Dispatcher.Invoke(a);
         }
 
         public void onMessage(Controller.UserActions action, object data) {
             switch (action) {
                 case Controller.UserActions.OBJECT_CLICKED:
                     _selectedItem = data as UIElement;
+                    updateView();
                     break;
                 case Controller.UserActions.MOVE_ITEM_BEGIN:
                     if (utils.Globals.isValidObject(_selectedItem)) {

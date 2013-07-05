@@ -18,7 +18,7 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmbBegin(Point point) {
-            var foo = MainWindow.Stage.InputHitTest(point);
+            var foo = Stage.HittestItems(point);
             _selectedObject = foo as UIElement;
             Controller.handle(Controller.UserActions.OBJECT_CLICKED, _selectedObject);
             Logger.log("hitTestObject:" + foo);

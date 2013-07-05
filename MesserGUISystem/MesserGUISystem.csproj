@@ -76,6 +76,8 @@
     <Compile Include="utils\Assert.cs" />
     <Compile Include="utils\Globals.cs" />
     <Compile Include="utils\Logger.cs" />
+    <Compile Include="utils\Stage.cs" />
+    <Compile Include="utils\Tools.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
