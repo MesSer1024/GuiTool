@@ -32,7 +32,12 @@ namespace MesserGUISystem.tools {
             _rectangle.Stroke = Brushes.Black;
         }
 
-        public override void lmb(Point point) {
+        public override void lmb(Point point)
+        {
+            if (_rectangle == null)
+            {
+                return;
+            }
             var delta = point - _startPosition;
             _rectangle.Width = Math.Abs(delta.X);
             _rectangle.Height = Math.Abs(delta.Y);

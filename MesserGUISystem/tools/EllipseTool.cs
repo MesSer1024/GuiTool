@@ -34,6 +34,10 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmb(Point point) {
+            if (_ellipse == null) { 
+                return; 
+            }
+
             var delta = point - _startPosition;
             _ellipse.Width = Math.Abs(delta.X);
             _ellipse.Height = Math.Abs(delta.Y);

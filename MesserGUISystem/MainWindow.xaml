@@ -18,7 +18,7 @@
                 <Button Content="Rectangle" Height="23" Name="createRectangle" Width="75" Click="createRectangle_Click" />
                 <Button Content="Ellipse" Height="23" Name="createEllipse" Width="75" Click="createEllipse_click"/>
             </WrapPanel>
-            <DockPanel Height="300" Visibility="Collapsed" Name="_myPropertyWindow">
+            <DockPanel Height="300" Visibility="Visible" Name="_myPropertyWindow">
                 <Label DockPanel.Dock="Top">Properties:</Label>
                 
                 <StackPanel Orientation="Vertical">

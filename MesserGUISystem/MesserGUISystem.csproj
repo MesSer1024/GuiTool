@@ -55,7 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="utils\Bounds.cs" />
+    <Compile Include="commands\ICommand.cs" />
+    <Compile Include="commands\MoveItemEndCommand.cs" />
+    <Compile Include="commands\ResizeItemCommand.cs" />
     <Compile Include="logic\Controller.cs" />
+    <Compile Include="logic\HistoryManager.cs" />
     <Compile Include="logic\IObserver.cs" />
     <Compile Include="logic\PropertyWindow.cs" />
     <Compile Include="tools\EllipseTool.cs" />
@@ -65,6 +70,7 @@
     <Compile Include="tools\ITool.cs" />
     <Compile Include="tools\TextTool.cs" />
     <Compile Include="tools\ToolBase.cs" />
+    <Compile Include="utils\Assert.cs" />
     <Compile Include="utils\Globals.cs" />
     <Compile Include="utils\Logger.cs" />
     <Page Include="MainWindow.xaml">

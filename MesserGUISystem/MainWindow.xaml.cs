@@ -44,6 +44,7 @@ namespace MesserGUISystem {
 
         public static Canvas Stage;
         private static PropertyWindow _propertyWindow;
+        private static HistoryManager _history;
 
         public MainWindow() {
             InitializeComponent();
@@ -53,6 +54,7 @@ namespace MesserGUISystem {
             this.MouseMove += onMouseMove;            
             _propertyWindow = new PropertyWindow(this);
             Controller.Instance.addObserver(_propertyWindow);
+            _history = new HistoryManager();
         }
 
         private void moveTool_Click(object sender, RoutedEventArgs e) {
@@ -104,8 +106,14 @@ namespace MesserGUISystem {
             return !regex.IsMatch(text);
         }
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
             e.Handled = IsNumerics(e.Text);
+            if (Keyboard.IsKeyDown(Key.Escape))
+            {
+                Controller.handle(Controller.UserActions.USER_PRESS_ESCAPE_TEXTBOX, sender);
+                e.Handled = true;
+            }
         }
 
         private void DockPanel_LostMouseCapture(object sender, MouseEventArgs e) {

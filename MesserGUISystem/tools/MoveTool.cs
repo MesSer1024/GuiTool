@@ -9,6 +9,7 @@ using MesserGUISystem.logic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MesserGUISystem.commands;
 
 namespace MesserGUISystem.tools {
     class MoveTool : ToolBase {
@@ -29,6 +30,7 @@ namespace MesserGUISystem.tools {
         public override void lmbBegin(Point point) {
             var foo = MainWindow.Stage.InputHitTest(point);
             if (utils.Globals.isValidObject(foo)) {
+                removeTemporaryObject();
                 _currentlyDraggedObject = foo as UIElement;
                 _timestampLmbDown = Environment.TickCount;
                 _limbo = true;
@@ -43,9 +45,7 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmb(Point point) {
-            if (_currentlyDraggedObject == null) {
-                return;
-            }
+            if (_currentlyDraggedObject == null) return;
 
             if (_limbo) {
                 if (timeout(DELAY_BEFORE_ACTION)) {
@@ -100,15 +100,23 @@ namespace MesserGUISystem.tools {
         }
 
         public override void lmbEnd(Point point) {
+            if (_currentlyDraggedObject == null) return;
             if (timeout(DELAY_BEFORE_ACTION)) {
                 _limbo = false;
-                if (_tmpRectangle != null) {
-                    MainWindow.removeItem(_tmpRectangle);
-                    _tmpRectangle = null;
-                }
-                Controller.handle(Controller.UserActions.MOVE_ITEM_END, _currentlyDraggedObject as UIElement);
+                var asdf = VisualTreeHelper.GetOffset(_currentlyDraggedObject);
+                Controller.handle(new MoveItemEndCommand(_currentlyDraggedObject, _startPosition, new Point(asdf.X, asdf.Y)));
 
+                removeTemporaryObject();
                 _currentlyDraggedObject = null;
+            }
+        }
+
+        private void removeTemporaryObject()
+        {
+            if (_tmpRectangle != null)
+            {
+                MainWindow.removeItem(_tmpRectangle);
+                _tmpRectangle = null;
             }
         }
 

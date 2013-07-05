@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Windows.Shapes;
 using System.Timers;
+using MesserGUISystem.commands;
 
 namespace MesserGUISystem.logic {
     class PropertyWindow : IObserver {
@@ -61,10 +62,12 @@ namespace MesserGUISystem.logic {
                 var h = Convert.ToDouble(_stage.SizeY.Text);
 
                 var foo = _selectedItem as Shape;
-                foo.Width = w;
-                foo.Height = h;
-                Canvas.SetLeft(_selectedItem, x);
-                Canvas.SetTop(_selectedItem, y);
+                var pos = VisualTreeHelper.GetOffset(foo);
+                var original = new Bounds(pos.X, pos.Y, foo.Width, foo.Height);
+                var target = new Bounds(x, y, w, h);
+
+                Controller.handle(new ResizeItemCommand(foo, original, target));
+
             } catch (Exception e) {
                 return;
             }
@@ -102,6 +105,9 @@ namespace MesserGUISystem.logic {
                     break;
                 case Controller.UserActions.MOVE_ITEM_END:
                     _timer.Stop();
+                    break;
+                case Controller.UserActions.USER_REFRESH_PROPERTIES:
+                    updateView();
                     break;
             }
         }

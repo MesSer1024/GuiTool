@@ -43,7 +43,8 @@ namespace MesserGUISystem.logic {
             }
         }
 
-        public enum UserActions {
+        public enum UserActions
+        {
             MOVE_TOOL,
             RESIZE_TOOL,
             RECTANGLE_TOOL,
@@ -54,7 +55,11 @@ namespace MesserGUISystem.logic {
             OBJECT_CLICKED,
             MOVE_ITEM_BEGIN,
             MOVE_ITEM_END,
-
+            USER_UNDO,
+            USER_REDO,
+            USER_RESIZE_ITEM,
+            USER_PRESS_ESCAPE_TEXTBOX,
+            USER_REFRESH_PROPERTIES,
         }
 
         static void onKeyDown(object sender, KeyEventArgs e) {
@@ -64,6 +69,18 @@ namespace MesserGUISystem.logic {
             } else {
                 Button btn = null;
                 switch (e.Key) {
+                    case Key.Z:
+                        if(Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                        {
+                            handle(UserActions.USER_UNDO);
+                        }
+                        break;
+                    case Key.Y:
+                        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                        {
+                            handle(UserActions.USER_REDO);
+                        }
+                        break;
                     case Key.V:
                         btn = _instance._view.moveTool;
                         break;
@@ -82,6 +99,10 @@ namespace MesserGUISystem.logic {
                     btn.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 }
             }
+        }
+
+        public static void handle(MesserGUISystem.commands.ICommand cmd) {
+            handle(cmd.Action, cmd);
         }
 
         public static void handle(UserActions action, Object e = null) {
@@ -110,8 +131,21 @@ namespace MesserGUISystem.logic {
                 case UserActions.OBJECT_CLICKED:
                     _instance.onObjectSelected(e as UIElement);
                     break;
+                case UserActions.USER_PRESS_ESCAPE_TEXTBOX:
+                    {
+                        var textBox = e as TextBox;
+                        FrameworkElement parent = (FrameworkElement)textBox.Parent;
+                        while (parent != null && parent is IInputElement && !((IInputElement)parent).Focusable)
+                        {
+                            parent = (FrameworkElement)parent.Parent;
+                        }
+
+                        DependencyObject scope = FocusManager.GetFocusScope(textBox);
+                        FocusManager.SetFocusedElement(scope, parent as IInputElement);
+                    }
+                    break;
                 default:
-                    Logger.error("Unhandled action:" + action);
+                    //Logger.error("Unhandled action:" + action);
                     break;
             }
             foreach (var i in _observers) {
@@ -121,6 +155,11 @@ namespace MesserGUISystem.logic {
 
         public void addObserver(IObserver o) {
             _observers.Add(o);
+        }
+
+        internal void removeObserver(IObserver o)
+        {
+            _observers.Remove(o);
         }
 
         private void moveToolClicked() {
