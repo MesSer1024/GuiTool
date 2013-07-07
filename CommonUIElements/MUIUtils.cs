@@ -5,8 +5,8 @@ using System.Text;
 
 namespace MesserUI {
     public static class MUIUtils {
-        public static MUIBase createInstanceFromType(MUITypes type, MUIRectangle bounds) {
-            MUIBase val = null;
+        public static MUIElement createInstanceFromType(MUITypes type, MUIRectangle bounds) {
+            MUIElement val = null;
 
             switch (type) {
                 case MUITypes.Fill:
@@ -15,10 +15,17 @@ namespace MesserUI {
                 case MUITypes.Text:
                     val = new MUIText();
                     break;
-            }
-            Fatal.True(val, String.Format("Could not create instance from type {0}", type));
+                default:
+                    throw new NotImplementedException("Unvalid type: " + type);
+                    break;
+            }            
+
             val.Bounds = bounds;
             return val;
+        }
+
+        public static MUIElement createInstanceFromType(MUITypes type) {
+            return createInstanceFromType(type, new MUIRectangle(0, 0, 250, 250));
         }
     }
 }

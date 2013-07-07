@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using MesserGUISystem.utils;
 using MesserGUISystem.logic;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using MesserGUISystem.commands;
+using WpfCommon;
+using WpfCommon.commands;
+using MesserGUISystem.wpf_magic;
+
 
 namespace MesserGUISystem.tools {
     class MoveTool : ToolBase {
@@ -29,7 +31,7 @@ namespace MesserGUISystem.tools {
 
         public override void lmbBegin(Point point) {
             var foo = Stage.HittestItems(point);
-            if (utils.Globals.isValidObject(foo)) {
+            if (Globals.isValidObject(foo)) {
                 removeTemporaryObject();
                 _currentlyDraggedObject = foo as UIElement;
                 _timestampLmbDown = Environment.TickCount;
@@ -39,7 +41,10 @@ namespace MesserGUISystem.tools {
                 _lmbStartPosition = point;
             }
 
-            Controller.handle(UserActions.OBJECT_CLICKED, foo as UIElement);
+            Controller.handle(UserActions.MUIELEMENT_DESELECTED);
+            if (Globals.isValidObject(foo)) {
+                Controller.handle(UserActions.MUIELEMENT_SELECTED_VALID, foo);
+            }
             //MainWindow.Stage.Children.ea
             Logger.log("hitTestObject:" + foo);
         }
@@ -59,7 +64,7 @@ namespace MesserGUISystem.tools {
                     _tmpShapeCopy.StrokeThickness = 1;
                     _tmpShapeCopy.Stroke = Brushes.LightGray;
 
-                    var bounds = utils.Globals.getBounds(_currentlyDraggedObject);
+                    var bounds = Globals.getBounds(_currentlyDraggedObject);
 
                     _tmpShapeCopy.Width = bounds.Width;
                     _tmpShapeCopy.Height = bounds.Height;
@@ -70,7 +75,7 @@ namespace MesserGUISystem.tools {
                     var foo = Canvas.GetZIndex(_currentlyDraggedObject);
                     Canvas.SetZIndex(_tmpShapeCopy, Canvas.GetZIndex(_currentlyDraggedObject) - 1);
 
-                    Controller.handle(UserActions.MOVE_ITEM_BEGIN, _currentlyDraggedObject as UIElement);
+                    Controller.handle(UserActions.MOVE_ITEM_BEGIN, _currentlyDraggedObject as Visual);
 
                     lmb(point); //redo
                 }
@@ -80,25 +85,25 @@ namespace MesserGUISystem.tools {
                     //only move in "biggest" axis
                     double deltaX = point.X - _lmbStartPosition.X;
                     double deltaY = point.Y - _lmbStartPosition.Y;
-                    if (utils.Globals.isBigger(deltaX, deltaY)) {
-                        Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, Controller.stageX, Controller.stageWidth - _currentlyDraggedObject.DesiredSize.Width));
+                    if (Globals.isBigger(deltaX, deltaY)) {
+                        Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, WpfController.stageX, WpfController.stageWidth - _currentlyDraggedObject.DesiredSize.Width));
                         Canvas.SetTop(_currentlyDraggedObject, _startPosition.Y);
                     } else {
                         Canvas.SetLeft(_currentlyDraggedObject, _startPosition.X);
-                        Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, Controller.stageY, Controller.stageHeight - _currentlyDraggedObject.DesiredSize.Height));
+                        Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, WpfController.stageY, WpfController.stageHeight - _currentlyDraggedObject.DesiredSize.Height));
                     }
                 } else {
                     double deltaX = point.X - _lmbStartPosition.X;
                     double deltaY = point.Y - _lmbStartPosition.Y;
-                    Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, Controller.stageX, int.MaxValue));
-                    Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, Controller.stageY, int.MaxValue));
+                    Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, WpfController.stageX, int.MaxValue));
+                    Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, WpfController.stageY, int.MaxValue));
                 }
             }
         }
 
         public override void destroyed() {
             if (_currentlyDraggedObject != null && _tmpShapeCopy != null) {
-                var b = utils.Globals.getBounds(_tmpShapeCopy);
+                var b = Globals.getBounds(_tmpShapeCopy);
                 Canvas.SetLeft(_currentlyDraggedObject, b.X);
                 Canvas.SetTop(_currentlyDraggedObject, b.Y);
             }
@@ -110,6 +115,8 @@ namespace MesserGUISystem.tools {
                 return new Rectangle();
             } else if (used is Ellipse) {
                 return new Ellipse();
+            } else if (used is LabelRectangle) {
+                return new Rectangle();
             } else {
                 Logger.error(String.Format("unknown type: {0}", used));
                 throw new Exception("Unknown type");

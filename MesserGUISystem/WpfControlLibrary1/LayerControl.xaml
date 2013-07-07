@@ -7,11 +7,14 @@
              d:DesignHeight="325" d:DesignWidth="300">
     <DockPanel MinHeight="25" Name="ContentRoot">
         <DockPanel DockPanel.Dock="Top"  VerticalAlignment="top" Background="LightSlateGray" MouseEnter="ContentRoot_MouseEnter" MouseLeave="ContentRoot_MouseLeave" MouseUp="ContentRoot_MouseUp">
+            <Button Background="Black" Width="16" Height="16" Margin="4" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Padding="1,-3,0,0" Click="Button_Click">
+                <Label Foreground="Yellow" Padding="0">+</Label>
+            </Button>
             <Label Name="frameName" DockPanel.Dock="Left" VerticalContentAlignment="Center" Content="{Binding LayerName}"/>
-            <CheckBox Name="visibleCheck"  DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="5" Content="Visible" IsEnabled="True" IsChecked="{Binding Checked}" />
+            <CheckBox Name="visibleCheck"  DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="5" Content="Visible" IsChecked="{Binding Checked}" Unchecked="onCheckboxState" Checked="onCheckboxState" />
             <Label />
         </DockPanel>
-        <ListBox Name="items" Visibility="Collapsed" Margin="15,0,0,0">
+        <ListBox Name="items" Visibility="Collapsed" Margin="15,0,0,0" SelectionChanged="items_SelectionChanged">
         </ListBox>
     </DockPanel>
 

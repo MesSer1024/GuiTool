@@ -5,7 +5,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace MesserGUISystem.utils {
+namespace WpfCommon {
     public static class Logger {
         private static StringBuilder _sb = new StringBuilder();
         private const bool BATCH_UPDATE = false;
@@ -44,7 +44,7 @@ namespace MesserGUISystem.utils {
             }
         }
 
-        internal static string flush() {
+        public static string flush() {
             String s = _sb.ToString();
             _sb.Clear();
             return s;

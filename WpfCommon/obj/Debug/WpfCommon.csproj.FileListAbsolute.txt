@@ -1,0 +1,7 @@
+D:\_programmering2\GuiTool\WpfCommon\bin\Debug\WpfCommon.dll
+D:\_programmering2\GuiTool\WpfCommon\bin\Debug\WpfCommon.pdb
+D:\_programmering2\GuiTool\WpfCommon\obj\Debug\ResolveAssemblyReference.cache
+D:\_programmering2\GuiTool\WpfCommon\obj\Debug\WpfCommon.dll
+D:\_programmering2\GuiTool\WpfCommon\obj\Debug\WpfCommon.pdb
+D:\_programmering2\GuiTool\WpfCommon\bin\Debug\MesserUI.dll
+D:\_programmering2\GuiTool\WpfCommon\bin\Debug\MesserUI.pdb

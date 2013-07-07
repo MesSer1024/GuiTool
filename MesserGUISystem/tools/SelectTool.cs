@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using MesserGUISystem.utils;
 using MesserGUISystem.logic;
 using System.Windows.Controls;
 using System.Windows.Media;
+using WpfCommon;
 
 namespace MesserGUISystem.tools {
     class SelectTool : ToolBase {
@@ -20,8 +20,10 @@ namespace MesserGUISystem.tools {
         public override void lmbBegin(Point point) {
             var foo = Stage.HittestItems(point);
             _selectedObject = foo as UIElement;
-            Controller.handle(UserActions.OBJECT_CLICKED, _selectedObject);
-            Logger.log("hitTestObject:" + foo);
+            Controller.handle(UserActions.MUIELEMENT_DESELECTED);
+            if (Globals.isValidObject(_selectedObject)) {
+                Controller.handle(UserActions.MUIELEMENT_SELECTED_VALID, _selectedObject);
+            }
         }
     }
 }

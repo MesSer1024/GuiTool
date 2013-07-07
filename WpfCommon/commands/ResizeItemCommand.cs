@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MesserGUISystem.logic;
-using System.Windows;
-using System.Windows.Shapes;
-using MesserGUISystem.utils;
+﻿using MesserUI;
+using WpfCommon;
 using System.Windows.Controls;
-using MesserUI;
+using System.Windows.Shapes;
 
-namespace MesserGUISystem.commands
+namespace WpfCommon.commands
 {
-    class ResizeItemCommand : ICommand
+    public class ResizeItemCommand : ICommand
     {
         public UserActions Action
         {

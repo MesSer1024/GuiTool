@@ -4,28 +4,29 @@
         Title="MesserGuiSystem" Width="1440" Height="780"  Background="DarkGray"
         xmlns:MesserControlsLibrary="clr-namespace:MesserControlsLibrary;assembly=MesserControlsLibrary"
         >
-    <DockPanel Background="DarkGray" MouseDown="canvas_mouseDown" MouseUp="canvas_mouseUp" LostMouseCapture="DockPanel_LostMouseCapture">
-        <Menu Height="23" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" DockPanel.Dock="Top" MinWidth="200">
-            <MenuItem Header="File">
-                <MenuItem Header="Save" />
-                <MenuItem Header="Load" />
-                <MenuItem Header="Exit" />
-            </MenuItem>
-        </Menu>
-        <DockPanel Width="300">
-            <Label DockPanel.Dock="Top"  Content="Tools" HorizontalContentAlignment="Center" FontSize="8" Padding="1" Background="#FF777777" />
-            <WrapPanel DockPanel.Dock="Top" Height="60">
-                <Button Content="Move" Height="23" Name="moveTool" Width="75" Click="moveTool_Click" />
-                <Button Content="Resize" Height="23" Name="resizeTool" Width="75" Click="resizeTool_Click" />
-                <Button Content="Rectangle" Height="23" Name="createRectangle" Width="75" Click="createRectangle_Click" />
-                <Button Content="Ellipse" Height="23" Name="createEllipse" Width="75" Click="createEllipse_click"/>
-            </WrapPanel>
-            <MesserControlsLibrary:PropertyWindowControl DockPanel.Dock="Top" x:Name="properyWindow"></MesserControlsLibrary:PropertyWindowControl>
-            <MesserControlsLibrary:LayersControl x:Name="layersWindow"></MesserControlsLibrary:LayersControl>
+    <Grid>
+        <DockPanel Background="DarkGray" MouseDown="canvas_mouseDown" MouseUp="canvas_mouseUp" LostMouseCapture="DockPanel_LostMouseCapture">
+            <Menu Height="23" HorizontalAlignment="Stretch" Name="menu1" VerticalAlignment="Top" DockPanel.Dock="Top" MinWidth="200">
+                <MenuItem Header="File">
+                    <MenuItem Header="Save" />
+                    <MenuItem Header="Load" />
+                    <MenuItem Header="Exit" />
+                </MenuItem>
+            </Menu>
+            <DockPanel Width="300">
+                <Label DockPanel.Dock="Top"  Content="Tools" HorizontalContentAlignment="Center" FontSize="8" Padding="1" Background="#FF777777" />
+                <WrapPanel DockPanel.Dock="Top" Height="60">
+                    <Button Content="Move" Height="23" Name="moveTool" Width="75" Click="moveTool_Click" />
+                </WrapPanel>
+                <MesserControlsLibrary:PropertyWindowControl DockPanel.Dock="Top" x:Name="properyWindow"></MesserControlsLibrary:PropertyWindowControl>
+                <MesserControlsLibrary:LayersControl x:Name="layersWindow"></MesserControlsLibrary:LayersControl>
+                <!-- <MesserControlsLibrary:CreateItemControl x:Name="itemControl"></MesserControlsLibrary:CreateItemControl> -->
+            </DockPanel>
+            <Canvas Name="stage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="200" MinHeight="200" Panel.ZIndex="10" Background="#FCFCFC">
+
+            </Canvas>
         </DockPanel>
-        <Canvas Name="stage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="200" MinHeight="200" Panel.ZIndex="10" Background="#FCFCFC">
-            
+        <Canvas Name="overlay" Visibility="Hidden">
         </Canvas>
-        
-    </DockPanel>
+    </Grid>
 </Window>

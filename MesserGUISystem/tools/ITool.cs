@@ -2,9 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.utils;
+using WpfCommon;
 
 namespace MesserGUISystem.tools {
+    public enum Tools {
+        None,
+        Rectangle,
+        Move,
+        Select,
+        Ellipse,
+        Text,
+    }
+
     interface ITool {
         Tools type { get; }
 

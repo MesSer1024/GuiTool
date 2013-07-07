@@ -7,36 +7,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using MesserUI;
+using WpfCommon;
+using System.Windows.Documents;
+using MesserGUISystem.logic;
 
-namespace MesserGUISystem.utils {
-    public enum Tools {
-        None,
-        Rectangle,
-        Move,
-        Select,
-        Ellipse,
-        Text,
-    }
-
-    public enum UserActions {
-        MOVE_TOOL,
-        RESIZE_TOOL,
-        RECTANGLE_TOOL,
-        ELLIPSE_TOOL,
-        LMB_DOWN,
-        LMB_RELEASE,
-        LMB_DOWN_MOUSE_MOVED,
-        OBJECT_CLICKED,
-        MOVE_ITEM_BEGIN,
-        MOVE_ITEM_END,
-        USER_UNDO,
-        USER_REDO,
-        USER_RESIZE_ITEM,
-        USER_PRESS_ESCAPE_TEXTBOX,
-        USER_REFRESH_PROPERTIES,
-        USER_CREATE_ITEM,
-    }
-
+namespace WpfCommon {
     public static class Globals {
         public static bool anyEquals(Object value, params Object[] checks) {
             for (int i = 0; i < checks.Length; i++) {
@@ -48,7 +23,8 @@ namespace MesserGUISystem.utils {
         }
 
         public static bool isValidObject(object e) {
-            return e != null && e != Stage.Area && e is UIElement;
+            //return e != null && e != Stage.Area && e is UIElement;
+            return e != null && WPFBridgeDatabase.Instance.isMUIElement(e as UIElement);
         }
 
         public static bool isBigger(dynamic value, dynamic trueIfSmaller) {
@@ -60,10 +36,9 @@ namespace MesserGUISystem.utils {
         }
 
         public static MUIRectangle getBounds(UIElement ele) {
-            var foo = ele as Shape;
             var pos = VisualTreeHelper.GetOffset(ele);
-            Assert.True(foo);
-
+            var foo = ele as FrameworkElement;
+            Assert.NotNull(foo);
             return new MUIRectangle(pos.X, pos.Y, foo.Width, foo.Height);
         }
 
@@ -71,11 +46,17 @@ namespace MesserGUISystem.utils {
             return new MUIPoint(r.X + r.Width / 2, r.Y + r.Height / 2);
         }
 
+        public static Point getCenter(Rect r) {
+            return new Point(r.X + r.Width / 2, r.Y + r.Height / 2);
+        }
+
         public static MUITypes getMUIType(UIElement ele) {
             if (ele is Rectangle) {
                 return MUITypes.Fill;
             } else if (ele is Ellipse) {
                 return MUITypes.Fill;
+            } else if (ele is TextBox || ele is Label || ele is IManualMUIObject) {
+                return MUITypes.Text;
             }
 
             Assert.Fail(ele, "Unknown element type");
@@ -84,6 +65,25 @@ namespace MesserGUISystem.utils {
 
         public static dynamic clamp(dynamic value, dynamic min, dynamic max) {
             return Math.Max(min, Math.Min(value, max));
+        }
+
+        public static void clearAdornedElements(UIElement item) {
+            if (item != null) {
+                var myAdornerLayer = AdornerLayer.GetAdornerLayer(item);
+                if (myAdornerLayer != null) {
+                    var adorners = myAdornerLayer.GetAdorners(item);
+                    if (adorners != null) {
+                        foreach (var adorner in adorners) {
+                            myAdornerLayer.Remove(adorner);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        public static MUIElement getMUIElement(UIElement ele) {
+            return WPFBridgeDatabase.Instance.getMUIElement(ele);
         }
     }
 }

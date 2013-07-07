@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MesserUI {
+namespace WpfCommon {
     class MesserUIExceptions : Exception {
         public MesserUIExceptions(string s)
             : base(s) {

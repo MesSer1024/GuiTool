@@ -55,25 +55,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="commands\CreateMUIElementCommand.cs" />
-    <Compile Include="commands\ICommand.cs" />
-    <Compile Include="commands\MoveItemEndCommand.cs" />
-    <Compile Include="commands\ResizeItemCommand.cs" />
-    <Compile Include="logic\Controller.cs" />
+    <Compile Include="logic\WpfController.cs" />
     <Compile Include="logic\HistoryManager.cs" />
-    <Compile Include="logic\IObserver.cs" />
     <Compile Include="logic\LayerWindow.cs" />
     <Compile Include="logic\PropertyWindow.cs" />
-    <Compile Include="tools\EllipseTool.cs" />
     <Compile Include="tools\MoveTool.cs" />
     <Compile Include="tools\SelectTool.cs" />
-    <Compile Include="tools\RectangleTool.cs" />
     <Compile Include="tools\ITool.cs" />
-    <Compile Include="tools\TextTool.cs" />
     <Compile Include="tools\ToolBase.cs" />
-    <Compile Include="utils\Globals.cs" />
-    <Compile Include="utils\Logger.cs" />
-    <Compile Include="utils\Stage.cs" />
+    <Compile Include="wpf_magic\DragCanvas.cs" />
+    <Compile Include="wpf_magic\EdgeAdorner.cs" />
+    <Compile Include="wpf_magic\LabelRectangle.cs" />
+    <Compile Include="wpf_magic\SelectionAdorner.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,12 +105,16 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wpf_magic\" />
+    <Folder Include="utils\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommonUIElements\MesserUI.csproj">
       <Project>{72CC2703-C02A-4605-ABFD-4DC097C93F3B}</Project>
       <Name>MesserUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfCommon\WpfCommon.csproj">
+      <Project>{78522F18-2D25-41E7-8AC4-ED54562A5E61}</Project>
+      <Name>WpfCommon</Name>
     </ProjectReference>
     <ProjectReference Include="WpfControlLibrary1\WpfControlLibrary1.csproj">
       <Project>{E57485EE-7FA2-4E89-9A4C-F88B9BB5ECB7}</Project>

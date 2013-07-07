@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.commands;
 using MesserUI;
 using System.Windows;
+using WpfCommon;
+using WpfCommon.commands;
+using MesserControlsLibrary;
 
 namespace MesserGUISystem.logic {
     class LayerWindow : IObserver {
@@ -26,19 +28,48 @@ namespace MesserGUISystem.logic {
             Controller.Instance.removeObserver(this);
         }
 
-        public void onMessage(utils.UserActions action, object data) {
+        public void onMessage(UserActions action, object data) {
             switch (action) {
-                case utils.UserActions.USER_CREATE_ITEM:
-                    var cmd = data as CreateMUIElementCommand;
-                    Assert.NotNull(cmd, cmd.MUIElement);
-                    addItemToLayer(cmd.MUIElement);
+                case UserActions.COMMAND_CREATE_MUI_ITEM: {
+                        var cmd = data as CreateMUIElementCommand;
+                        Assert.NotNull(cmd, cmd.MUIElement);
+                        addItemToLayer(cmd.MUIElement);
+                    }
+                    break;
+                case UserActions.MUIELEMENT_SELECTED_VALID: {
+                        var ele = data as UIElement;
+                        var muiElement = Globals.getMUIElement(ele);
+                        var newLayer = getLayerIndexForItem(muiElement);
+                        _content.setSelectedLayer(newLayer);
+                    }
+                    break;
+                case UserActions.CREATE_ITEM_SHOW_OVERLAY_SCREEN:
+                    _content.setSelectedLayer(data as LayerRowControl);
+                    break;
+                case UserActions.COMMAND_CREATE_MUI_LAYER:
                     break;
             }
         }
 
-        private void addItemToLayer(MUIBase item) {
+        private int getLayerIndexForItem(MUIElement ele) {
+            int ix = 0;
+            foreach (var i in _content.Layers) {
+                if (i.containsItem(ele)) {
+                    return ix;
+                }
+                ix++;
+            }
+            Assert.Fail("Did not find element in any layer!");
+            return -1;
+        }
+
+        private void addItemToLayer(MUIElement item) {
             _content.getSelectedlayer().addItem(item);
             _content.getSelectedlayer().expand();
+        }
+
+        public MUILayer getSelectedMUILayer() {
+            return _content.getSelectedlayer().Layer;
         }
     }
 }

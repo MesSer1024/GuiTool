@@ -1,17 +1,17 @@
-﻿using MesserGUISystem.logic;
-using MesserGUISystem.utils;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows;
+using WpfCommon;
+using System.Windows.Media;
 
-namespace MesserGUISystem.commands
+namespace WpfCommon.commands
 {
-    class MoveItemEndCommand : ICommand
+    public class MoveItemEndCommand : ICommand
     {
         #region ICommand Members
 
         public UserActions Action
         {
-            get { return UserActions.MOVE_ITEM_END; }
+            get { return UserActions.COMMAND_MOVE_ITEM_END; }
         }
 
         public void execute()

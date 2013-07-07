@@ -9,10 +9,12 @@ using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Windows.Shapes;
 using System.Timers;
-using MesserGUISystem.commands;
 using MesserControlsLibrary;
 using MesserUI;
-using MesserGUISystem.utils;
+using WpfCommon;
+using System.Windows.Documents;
+using MesserGUISystem.wpf_magic;
+using WpfCommon.commands;
 
 namespace MesserGUISystem.logic {
     class PropertyWindow : IObserver {
@@ -57,7 +59,7 @@ namespace MesserGUISystem.logic {
 
         private void updateModelWithViewValues() {            
             try {
-                var original = utils.Globals.getBounds(_selectedItem);
+                var original = Globals.getBounds(_selectedItem);
                 var target = new MUIRectangle(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
 
                 Controller.handle(new ResizeItemCommand(_selectedItem as Shape, original, target));
@@ -68,33 +70,41 @@ namespace MesserGUISystem.logic {
         }
 
         private void updateView() {
-            if (utils.Globals.isValidObject(_selectedItem)) {
-                utils.Globals.updateUi(() => {
+            //#TODO: Is this neccessary since we have that on all valid objects
+            if (Globals.isValidObject(_selectedItem)) {
+                var item = _selectedItem;
+                Globals.updateUi(() => {
                     _content.Visibility = Visibility.Visible;
 
-                    var foo = VisualTreeHelper.GetOffset(_selectedItem);
+                    var foo = VisualTreeHelper.GetOffset(item);
                     _content.PositionX = foo.X;
                     _content.PositionY = foo.Y;
-                    _content.SizeX = _selectedItem.RenderSize.Width;
-                    _content.SizeY = _selectedItem.RenderSize.Height;
+                    _content.SizeX = item.RenderSize.Width;
+                    _content.SizeY = item.RenderSize.Height;
                 });
             } else {
-                utils.Globals.updateUi(() => { _content.Visibility = Visibility.Hidden; });
+                Globals.updateUi(() => { _content.Visibility = Visibility.Hidden; });
             }
         }
 
         public void onMessage(UserActions action, object data) {
             switch (action) {
-                case UserActions.OBJECT_CLICKED:
+                case UserActions.MUIELEMENT_DESELECTED:
+                    Globals.clearAdornedElements(_selectedItem as UIElement);
                     _selectedItem = data as UIElement;
                     updateView();
                     break;
+                case UserActions.MUIELEMENT_SELECTED_VALID:
+                    _selectedItem = data as UIElement;
+                    AdornerLayer.GetAdornerLayer(_selectedItem).Add(new SelectionAdorner(_selectedItem));
+                    updateView();
+                    break;
                 case UserActions.MOVE_ITEM_BEGIN:
-                    if (utils.Globals.isValidObject(_selectedItem)) {
+                    if (Globals.isValidObject(_selectedItem)) {
                         _timer.Start();
                     }
                     break;
-                case UserActions.MOVE_ITEM_END:
+                case UserActions.COMMAND_MOVE_ITEM_END:
                     _timer.Stop();
                     break;
                 case UserActions.USER_REFRESH_PROPERTIES:

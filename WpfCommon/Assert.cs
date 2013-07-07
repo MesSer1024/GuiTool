@@ -3,8 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MesserUI
-{
+namespace WpfCommon {
+    public class Fatal {
+        public static void True(bool o, string errorDesc = "") {
+            if (!o) {
+                throw new FatalException("Fatal.True (bool) failed: " + errorDesc);
+            }
+        }
+
+        public static void True(object o, string errorDesc = "") {
+            if (o == null) {
+                throw new FatalException("Fatal.True (NotNull) failed: " + errorDesc);
+            }
+        }
+
+        public static void NotNull(object o, string errorDesc = "") {
+            if (o == null) {
+                throw new FatalException("Fatal.NotNull failed: " + errorDesc);
+            }
+        }
+    }
+
     public class Assert {
         public static bool Validate(object o, string errorDesc = "") {
             if (o == null) {

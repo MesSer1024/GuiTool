@@ -49,6 +49,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CreateItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LayerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -61,6 +65,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="CreateItemControl.xaml.cs">
+      <DependentUpon>CreateItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LayerControl.xaml.cs">
       <DependentUpon>LayerControl.xaml</DependentUpon>
     </Compile>
@@ -104,6 +111,10 @@
     <ProjectReference Include="..\..\CommonUIElements\MesserUI.csproj">
       <Project>{72CC2703-C02A-4605-ABFD-4DC097C93F3B}</Project>
       <Name>MesserUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WpfCommon\WpfCommon.csproj">
+      <Project>{78522F18-2D25-41E7-8AC4-ED54562A5E61}</Project>
+      <Name>WpfCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -11,11 +11,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MesserGUISystem.utils;
 using MesserGUISystem.tools;
 using MesserGUISystem.logic;
 using System.Text.RegularExpressions;
 using MesserUI;
+using WpfCommon;
 
 namespace MesserGUISystem {
     /// <summary>
@@ -23,40 +23,27 @@ namespace MesserGUISystem {
     /// </summary>
     public partial class MainWindow : Window {
 
-        private static PropertyWindow _propertyWindow;
-        private static HistoryManager _history;
-        private LayerWindow _layerWindow;
+        internal static PropertyWindow _propertyWindow;
+        internal static HistoryManager _history;
+        internal static LayerWindow _layerWindow;
 
         public MainWindow() {
             InitializeComponent();
             Stage.Area = this.stage;
             //Canvas.SetZIndex(stage, int.MinValue);
-            Controller.initialize(this, stage);
+            WpfController.initialize(this, stage);
             this.MouseMove += onMouseMove;            
             _propertyWindow = new PropertyWindow(this.properyWindow);
             _history = new HistoryManager();
             _layerWindow = new LayerWindow(this.layersWindow);
+            WPFBridgeDatabase.initialize();
             //layersWindow.getSelectedlayer().addItem(new MUIFill());
+            Controller.handle(UserActions.MOVE_TOOL);
         }
 
         private void moveTool_Click(object sender, RoutedEventArgs e) {
             e.Handled = true;
             Controller.handle(UserActions.MOVE_TOOL);
-        }
-
-        private void resizeTool_Click(object sender, RoutedEventArgs e) {
-            e.Handled = true;
-            Controller.handle(UserActions.RESIZE_TOOL);
-        }
-
-        private void createRectangle_Click(object sender, RoutedEventArgs e) {
-            e.Handled = true;
-            Controller.handle(UserActions.RECTANGLE_TOOL);
-        }
-
-        private void createEllipse_click(object sender, RoutedEventArgs e) {
-            e.Handled = true;
-            Controller.handle(UserActions.ELLIPSE_TOOL);
         }
 
         private void canvas_mouseDown(object sender, MouseButtonEventArgs e) {
@@ -94,6 +81,10 @@ namespace MesserGUISystem {
 
         private void DockPanel_LostMouseCapture(object sender, MouseEventArgs e) {
             //var foo = 1;
+        }
+
+        private void overlay_MouseUp(object sender, MouseButtonEventArgs e) {
+
         }
     }
 }

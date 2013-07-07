@@ -5,9 +5,10 @@ using System.Text;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
 
-namespace MesserGUISystem.utils {
-    static class Stage {
+namespace WpfCommon {
+    public static class Stage {
         public static Canvas Area { get; set; }
         private static int _counter = 0;
 
@@ -24,7 +25,7 @@ namespace MesserGUISystem.utils {
             Area.Children.Remove(o);
         }
 
-        internal static object HittestItems(Point point) {
+        public static object HittestItems(Point point) {
             return Area.InputHitTest(point);
         }
     }

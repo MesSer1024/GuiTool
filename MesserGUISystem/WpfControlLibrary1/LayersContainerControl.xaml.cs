@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MesserUI;
+using WpfCommon;
 
 namespace MesserControlsLibrary {
     /// <summary>
@@ -19,6 +20,7 @@ namespace MesserControlsLibrary {
     /// </summary>
     public partial class LayersControl : UserControl {
         private List<LayerRowControl> _layers;
+        public List<LayerRowControl> Layers { get { return _layers; } }
 
         public LayersControl() {
             InitializeComponent();
@@ -31,17 +33,23 @@ namespace MesserControlsLibrary {
             layers.ItemsSource = _layers;
         }
 
-        public void CreateLayer(string name="New Layer", bool visible=true) {
+        public void CreateLayer(string name="New Layer") {
             var foo = new LayerRowControl();
             foo.LayerName = name;
-            foo.Checked = visible;
+            //foo.Checked = visible;
             _layers.Add(foo);
+        }
+
+        public void setSelectedLayer(LayerRowControl control) {
+            Assert.NotNull(control);
+            layers.SelectedItem = control;
+            layers.Focus();
         }
 
         public void setSelectedLayer(int i) {
             Assert.True(i < layers.Items.Count && i >= 0, String.Format("setSelectedLayer out of range was: {0}", i));
             layers.SelectedIndex = i;
-            //layers.Focus();
+            layers.Focus();
         }
 
         public LayerRowControl getSelectedlayer() {

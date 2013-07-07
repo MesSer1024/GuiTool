@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.utils;
 using System.Windows.Input;
+using WpfCommon;
 
 namespace MesserGUISystem.tools {
     class ToolBase : ITool {

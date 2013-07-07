@@ -18,7 +18,8 @@ namespace MesserUI
         public double W { 
             get { return _w; } 
             set {
-                Assert.True(value >= 0);
+                if (value < 0)
+                    throw new ArgumentException("Expected width to be non-negative");
                 _w = value;
             }
         }
@@ -42,7 +43,8 @@ namespace MesserUI
             get { return _h; }
             set
             {
-                Assert.True(value >= 0);
+                if (value < 0)
+                    throw new ArgumentException("Expected height to be non-negative");
                 _h = value;
             }
         }

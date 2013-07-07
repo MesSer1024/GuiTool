@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.utils;
-using MesserGUISystem.commands;
 using MesserUI;
+using WpfCommon;
+using WpfCommon.commands;
 
 namespace MesserGUISystem.logic
 {
@@ -29,7 +29,7 @@ namespace MesserGUISystem.logic
         {
             switch (action)
             {
-                case UserActions.MOVE_ITEM_END:
+                case UserActions.COMMAND_MOVE_ITEM_END:
                     {
                         var cmd = data as MoveItemEndCommand;
                         addToHistory(cmd);
