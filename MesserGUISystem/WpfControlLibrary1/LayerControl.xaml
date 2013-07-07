@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="MesserControlsLibrary.LayerRowControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="325" d:DesignWidth="300">
+    <DockPanel MinHeight="25" Name="ContentRoot">
+        <DockPanel DockPanel.Dock="Top"  VerticalAlignment="top" Background="LightSlateGray" MouseEnter="ContentRoot_MouseEnter" MouseLeave="ContentRoot_MouseLeave" MouseUp="ContentRoot_MouseUp">
+            <Label Name="frameName" DockPanel.Dock="Left" VerticalContentAlignment="Center" Content="{Binding LayerName}"/>
+            <CheckBox Name="visibleCheck"  DockPanel.Dock="Right" VerticalContentAlignment="Center" Margin="5" Content="Visible" IsEnabled="True" IsChecked="{Binding Checked}" />
+            <Label />
+        </DockPanel>
+        <ListBox Name="items" Visibility="Collapsed" Margin="15,0,0,0">
+        </ListBox>
+    </DockPanel>
+
+</UserControl>

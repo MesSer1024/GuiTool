@@ -23,7 +23,7 @@ namespace MesserGUISystem.tools {
         private Shape _tmpShapeCopy; 
 
         public MoveTool() {
-            type = utils.Globals.Tools.Move;
+            type = Tools.Move;
             _limbo = false;
         }
 
@@ -39,7 +39,7 @@ namespace MesserGUISystem.tools {
                 _lmbStartPosition = point;
             }
 
-            Controller.handle(Controller.UserActions.OBJECT_CLICKED, foo as UIElement);
+            Controller.handle(UserActions.OBJECT_CLICKED, foo as UIElement);
             //MainWindow.Stage.Children.ea
             Logger.log("hitTestObject:" + foo);
         }
@@ -58,19 +58,19 @@ namespace MesserGUISystem.tools {
                     _tmpShapeCopy.Fill = _solidColorBrush;
                     _tmpShapeCopy.StrokeThickness = 1;
                     _tmpShapeCopy.Stroke = Brushes.LightGray;
-                    var size = VisualTreeHelper.GetContentBounds(_currentlyDraggedObject);
-                    var offset = VisualTreeHelper.GetOffset(_currentlyDraggedObject);
 
-                    _tmpShapeCopy.Width = size.Width;
-                    _tmpShapeCopy.Height = size.Height;
-                    Canvas.SetLeft(_tmpShapeCopy, offset.X);
-                    Canvas.SetTop(_tmpShapeCopy, offset.Y);
+                    var bounds = utils.Globals.getBounds(_currentlyDraggedObject);
+
+                    _tmpShapeCopy.Width = bounds.Width;
+                    _tmpShapeCopy.Height = bounds.Height;
+                    Canvas.SetLeft(_tmpShapeCopy, bounds.X);
+                    Canvas.SetTop(_tmpShapeCopy, bounds.Y);
 
                     Stage.addItem(_tmpShapeCopy);
                     var foo = Canvas.GetZIndex(_currentlyDraggedObject);
                     Canvas.SetZIndex(_tmpShapeCopy, Canvas.GetZIndex(_currentlyDraggedObject) - 1);
 
-                    Controller.handle(Controller.UserActions.MOVE_ITEM_BEGIN, _currentlyDraggedObject as UIElement);
+                    Controller.handle(UserActions.MOVE_ITEM_BEGIN, _currentlyDraggedObject as UIElement);
 
                     lmb(point); //redo
                 }
@@ -94,6 +94,15 @@ namespace MesserGUISystem.tools {
                     Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, Controller.stageY, int.MaxValue));
                 }
             }
+        }
+
+        public override void destroyed() {
+            if (_currentlyDraggedObject != null && _tmpShapeCopy != null) {
+                var b = utils.Globals.getBounds(_tmpShapeCopy);
+                Canvas.SetLeft(_currentlyDraggedObject, b.X);
+                Canvas.SetTop(_currentlyDraggedObject, b.Y);
+            }
+            removeTemporaryObject();
         }
 
         private Shape cloneObject(UIElement used) {

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Input;
-using MesserGUISystem.logic;
-using System.Windows;
+﻿using MesserGUISystem.logic;
+using MesserGUISystem.utils;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace MesserGUISystem.commands
 {
@@ -13,9 +9,9 @@ namespace MesserGUISystem.commands
     {
         #region ICommand Members
 
-        public Controller.UserActions Action
+        public UserActions Action
         {
-            get { return Controller.UserActions.MOVE_ITEM_END; }
+            get { return UserActions.MOVE_ITEM_END; }
         }
 
         public void execute()

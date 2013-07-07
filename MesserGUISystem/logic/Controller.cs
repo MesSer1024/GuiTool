@@ -43,25 +43,6 @@ namespace MesserGUISystem.logic {
             }
         }
 
-        public enum UserActions
-        {
-            MOVE_TOOL,
-            RESIZE_TOOL,
-            RECTANGLE_TOOL,
-            ELLIPSE_TOOL,
-            LMB_DOWN,
-            LMB_RELEASE,
-            LMB_DOWN_MOUSE_MOVED,
-            OBJECT_CLICKED,
-            MOVE_ITEM_BEGIN,
-            MOVE_ITEM_END,
-            USER_UNDO,
-            USER_REDO,
-            USER_RESIZE_ITEM,
-            USER_PRESS_ESCAPE_TEXTBOX,
-            USER_REFRESH_PROPERTIES,
-        }
-
         static void onKeyDown(object sender, KeyEventArgs e) {
             Logger.log("key pressed:" + e.Key.ToString());
             if (Globals.anyEquals(e.Key, Key.Oem5, Key.OemTilde)) {
@@ -131,12 +112,10 @@ namespace MesserGUISystem.logic {
                 case UserActions.OBJECT_CLICKED:
                     _instance.onObjectSelected(e as UIElement);
                     break;
-                case UserActions.USER_PRESS_ESCAPE_TEXTBOX:
-                    {
+                case UserActions.USER_PRESS_ESCAPE_TEXTBOX: {
                         var textBox = e as TextBox;
                         FrameworkElement parent = (FrameworkElement)textBox.Parent;
-                        while (parent != null && parent is IInputElement && !((IInputElement)parent).Focusable)
-                        {
+                        while (parent != null && parent is IInputElement && !((IInputElement)parent).Focusable) {
                             parent = (FrameworkElement)parent.Parent;
                         }
 
@@ -180,6 +159,9 @@ namespace MesserGUISystem.logic {
         }
 
         private void changeTool(ITool tool) {
+            if (_currentTool != null) {
+                _currentTool.destroyed();
+            }
             _currentTool = tool;
             Mouse.OverrideCursor = _currentTool.getCursor();
         }

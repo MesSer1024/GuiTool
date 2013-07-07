@@ -8,55 +8,63 @@ using System.Windows.Media;
 using MesserGUISystem.utils;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MesserGUISystem.commands;
+using MesserGUISystem.logic;
 
 namespace MesserGUISystem.tools {
     class RectangleTool : ToolBase {
         private Point _startPosition;
         private Point _current;
-        private Rectangle _rectangle;
+        private Rectangle _shape;
         private SolidColorBrush _solidColorBrush;
 
         public RectangleTool()
-            : base(utils.Globals.Tools.Rectangle) {
+            : base(Tools.Rectangle) {
         }
 
         public override void lmbBegin(Point point) {
-            if (_rectangle != null)
+            if (_shape != null)
                 return;
             _startPosition = point;
             _current = point;
-            _rectangle = new Rectangle();
-            Stage.addItem(_rectangle);
+            _shape = new Rectangle();
+            Stage.addItem(_shape);
             _solidColorBrush = new SolidColorBrush();
             _solidColorBrush.Color = Color.FromArgb(255, 255, 255, 0);
-            _rectangle.Fill = _solidColorBrush;
-            _rectangle.StrokeThickness = 1;
-            _rectangle.Stroke = Brushes.Black;
+            _shape.Fill = _solidColorBrush;
+            _shape.StrokeThickness = 1;
+            _shape.Stroke = Brushes.Black;
         }
 
-        public override void lmb(Point point)
-        {
-            if (_rectangle == null)
-            {
+        public override void lmb(Point point) {
+            if (_shape == null)
                 return;
-            }
+
             var delta = point - _startPosition;
-            _rectangle.Width = Math.Abs(delta.X);
-            _rectangle.Height = Math.Abs(delta.Y);
+            _shape.Width = Math.Abs(delta.X);
+            _shape.Height = Math.Abs(delta.Y);
 
 
             _current.X = Math.Min(point.X, _startPosition.X);
             _current.Y = Math.Min(point.Y, _startPosition.Y);
-            Canvas.SetLeft(_rectangle, _current.X);
-            Canvas.SetTop(_rectangle, _current.Y);
+            Canvas.SetLeft(_shape, _current.X);
+            Canvas.SetTop(_shape, _current.Y);
         }
 
         public override void lmbEnd(Point point) {
-            Logger.log("drew a rectangle : " + _rectangle.RenderSize.ToString());
+            if (_shape == null)
+                return;
+            Logger.log("drew a rectangle : " + _shape.RenderSize.ToString());
         }
 
         public override System.Windows.Input.Cursor getCursor() {
             return Cursors.Pen;
+        }
+
+        public override void destroyed() {
+            if (_shape != null) {
+                Controller.handle(new CreateMUIElementCommand(_shape));
+            }
         }
     }
 }

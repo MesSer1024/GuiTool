@@ -7,14 +7,15 @@ using System.Windows;
 using System.Windows.Shapes;
 using MesserGUISystem.utils;
 using System.Windows.Controls;
+using MesserUI;
 
 namespace MesserGUISystem.commands
 {
     class ResizeItemCommand : ICommand
     {
-        public logic.Controller.UserActions Action
+        public UserActions Action
         {
-            get { return Controller.UserActions.USER_RESIZE_ITEM; }
+            get { return UserActions.USER_RESIZE_ITEM; }
         }
 
         public void execute()
@@ -33,18 +34,17 @@ namespace MesserGUISystem.commands
             Canvas.SetTop(Element, Original.Y);
         }
 
-        public ResizeItemCommand(Shape ele, Bounds original, Bounds target)
-        {
+        public ResizeItemCommand(Shape ele, MUIRectangle original, MUIRectangle target) {
             Assert.True(ele);
             Element = ele;
             Original = original;
             Target = target;
-            
+
             execute();
         }
 
-        public Bounds Target { get; set; }
-        public Bounds Original { get; set; }
+        public MUIRectangle Target { get; set; }
+        public MUIRectangle Original { get; set; }
         public Shape Element { get; set; }
     }
 }

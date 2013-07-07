@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MesserGUISystem.utils;
 
 namespace MesserGUISystem.logic {
     public interface IObserver {
-        void onMessage(MesserGUISystem.logic.Controller.UserActions action, object data);
+        void onMessage(UserActions action, object data);
     }
 }

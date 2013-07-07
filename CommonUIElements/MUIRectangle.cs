@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows;
-using MesserGUISystem.utils;
+using MesserUI;
 
-namespace MesserGUISystem.commands
+namespace MesserUI
 {
-    public class Bounds
+    public class MUIRectangle
     {
         private double _x;
         private double _y;
@@ -19,7 +18,7 @@ namespace MesserGUISystem.commands
         public double W { 
             get { return _w; } 
             set {
-                Assert.True(value > 0);
+                Assert.True(value >= 0);
                 _w = value;
             }
         }
@@ -43,21 +42,20 @@ namespace MesserGUISystem.commands
             get { return _h; }
             set
             {
-                Assert.True(value > 0);
-                _w = value;
+                Assert.True(value >= 0);
+                _h = value;
             }
         }
 
         public double Right { get { return _x + _w; } }
         public double Bottom { get { return _y + _h; } }
-        public Point Center { get { return new Point(_x + _w/2, _y + _h/2); } }
 
-        public Bounds()
+        public MUIRectangle()
         {
             _x = _y = _w = _h = 0;
         }
 
-        public Bounds(double x, double y, double w, double h)
+        public MUIRectangle(double x, double y, double w, double h)
         {
             _x = x;
             _y = y;

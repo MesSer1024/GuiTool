@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.logic;
+using MesserGUISystem.utils;
 
 namespace MesserGUISystem.commands
 {
     public interface ICommand
     {
-        Controller.UserActions Action { get; }
+        UserActions Action { get; }
 
         void execute();
         void revert();

@@ -17,15 +17,15 @@ namespace MesserControlsLibrary {
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl {
+    public partial class PropertyWindowControl : UserControl {
         public delegate void PropertyWindowDelegate(object sender);
         public delegate void ConceptPressedDelegate(object sender, KeyEventArgs e);
         public event ConceptPressedDelegate OnConceptButtonPressedInTextbox;
         public event PropertyWindowDelegate OnMouseFocusLostFromTextbox;
         
-        public UserControl1() {
+        public PropertyWindowControl() {
             InitializeComponent();
-            PropertyWindowRoot.DataContext = this;
+            ContentRoot.DataContext = this;
         }
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
@@ -59,10 +59,10 @@ namespace MesserControlsLibrary {
             return false;
         }
 
-        public static readonly DependencyProperty PosPropertyX = DependencyProperty.Register("PositionX", typeof(double), typeof(UserControl1), new PropertyMetadata(0d));
-        public static readonly DependencyProperty PosPropertyY = DependencyProperty.Register("PositionY", typeof(double), typeof(UserControl1), new PropertyMetadata(0d));
-        public static readonly DependencyProperty SizePropertyX = DependencyProperty.Register("SizeX", typeof(double), typeof(UserControl1), new PropertyMetadata(0d));
-        public static readonly DependencyProperty SizePropertyY = DependencyProperty.Register("SizeY", typeof(double), typeof(UserControl1), new PropertyMetadata(0d));
+        public static readonly DependencyProperty PosPropertyX = DependencyProperty.Register("PositionX", typeof(double), typeof(PropertyWindowControl), new PropertyMetadata(0d));
+        public static readonly DependencyProperty PosPropertyY = DependencyProperty.Register("PositionY", typeof(double), typeof(PropertyWindowControl), new PropertyMetadata(0d));
+        public static readonly DependencyProperty SizePropertyX = DependencyProperty.Register("SizeX", typeof(double), typeof(PropertyWindowControl), new PropertyMetadata(0d));
+        public static readonly DependencyProperty SizePropertyY = DependencyProperty.Register("SizeY", typeof(double), typeof(PropertyWindowControl), new PropertyMetadata(0d));
 
         public double PositionX {
             get { return (double)GetValue(PosPropertyX); }

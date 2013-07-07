@@ -49,14 +49,32 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
+    <Page Include="LayerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LayersContainerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertyWindowControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Compile Include="LayerControl.xaml.cs">
+      <DependentUpon>LayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LayersContainerControl.xaml.cs">
+      <DependentUpon>LayersContainerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyWindowControl.xaml.cs">
+      <DependentUpon>PropertyWindowControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -81,6 +99,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonUIElements\MesserUI.csproj">
+      <Project>{72CC2703-C02A-4605-ABFD-4DC097C93F3B}</Project>
+      <Name>MesserUI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

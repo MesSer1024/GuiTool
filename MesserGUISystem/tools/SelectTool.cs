@@ -13,14 +13,14 @@ namespace MesserGUISystem.tools {
     class SelectTool : ToolBase {
         private UIElement _selectedObject;
 
-        public SelectTool():base(utils.Globals.Tools.Select) {
+        public SelectTool():base(Tools.Select) {
             
         }
 
         public override void lmbBegin(Point point) {
             var foo = Stage.HittestItems(point);
             _selectedObject = foo as UIElement;
-            Controller.handle(Controller.UserActions.OBJECT_CLICKED, _selectedObject);
+            Controller.handle(UserActions.OBJECT_CLICKED, _selectedObject);
             Logger.log("hitTestObject:" + foo);
         }
     }

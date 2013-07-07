@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MesserGUISystem.commands;
 using MesserGUISystem.utils;
+using MesserGUISystem.commands;
+using MesserUI;
 
 namespace MesserGUISystem.logic
 {
@@ -24,23 +25,23 @@ namespace MesserGUISystem.logic
             Controller.Instance.removeObserver(this);
         }
 
-        public void onMessage(Controller.UserActions action, object data)
+        public void onMessage(UserActions action, object data)
         {
             switch (action)
             {
-                case Controller.UserActions.MOVE_ITEM_END:
+                case UserActions.MOVE_ITEM_END:
                     {
                         var cmd = data as MoveItemEndCommand;
                         addToHistory(cmd);
                     }
                     break;
-                case Controller.UserActions.USER_UNDO:
+                case UserActions.USER_UNDO:
                     undo();
                     break;
-                case Controller.UserActions.USER_REDO:
+                case UserActions.USER_REDO:
                     redo();
                     break;
-                case Controller.UserActions.USER_RESIZE_ITEM:
+                case UserActions.USER_RESIZE_ITEM:
                     {
                         var cmd = data as ResizeItemCommand;
                         addToHistory(cmd);
@@ -65,7 +66,7 @@ namespace MesserGUISystem.logic
                 //remove any commands no longer suppposed to be in history
                 if (_timeInHistory < _performedCommands.Count)
                 {
-                    _performedCommands.RemoveRange(_timeInHistory , _performedCommands.Count);
+                    _performedCommands.RemoveRange(_timeInHistory , _performedCommands.Count - _timeInHistory);
                 }
                 _performedCommands.Add(cmd);
                 _timeInHistory = _performedCommands.Count;

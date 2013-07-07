@@ -11,25 +11,27 @@ using System.Windows.Shapes;
 using System.Timers;
 using MesserGUISystem.commands;
 using MesserControlsLibrary;
+using MesserUI;
+using MesserGUISystem.utils;
 
 namespace MesserGUISystem.logic {
     class PropertyWindow : IObserver {
 
         private UIElement _selectedItem;
-        private UserControl1 _content;
+        private PropertyWindowControl _content;
         private Timer _timer;
 
         ~PropertyWindow() {
             Controller.Instance.removeObserver(this);
         }
 
-        public PropertyWindow(UserControl1 content) {
+        public PropertyWindow(PropertyWindowControl content) {
             _content = content;
-            _content.OnConceptButtonPressedInTextbox += new UserControl1.ConceptPressedDelegate(onConceptButtonPressedInTextbox);
-            _content.OnMouseFocusLostFromTextbox += new UserControl1.PropertyWindowDelegate(onMouseFocusLostFromTextbox);
+            _content.OnConceptButtonPressedInTextbox += new PropertyWindowControl.ConceptPressedDelegate(onConceptButtonPressedInTextbox);
+            _content.OnMouseFocusLostFromTextbox += new PropertyWindowControl.PropertyWindowDelegate(onMouseFocusLostFromTextbox);
             _content.Visibility = Visibility.Hidden;
 
-            _timer = new Timer(10);
+            _timer = new Timer(25);
             _timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
             Controller.Instance.addObserver(this);
         }
@@ -37,7 +39,7 @@ namespace MesserGUISystem.logic {
         void onConceptButtonPressedInTextbox(object sender, KeyEventArgs e) {
             switch (e.Key) {
                 case Key.Escape:
-                    Controller.handle(Controller.UserActions.USER_PRESS_ESCAPE_TEXTBOX, sender);
+                    Controller.handle(UserActions.USER_PRESS_ESCAPE_TEXTBOX, sender);
                     break;
                 case Key.Enter:
                     updateModelWithViewValues();
@@ -56,7 +58,7 @@ namespace MesserGUISystem.logic {
         private void updateModelWithViewValues() {            
             try {
                 var original = utils.Globals.getBounds(_selectedItem);
-                var target = new Bounds(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
+                var target = new MUIRectangle(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
 
                 Controller.handle(new ResizeItemCommand(_selectedItem as Shape, original, target));
 
@@ -81,21 +83,21 @@ namespace MesserGUISystem.logic {
             }
         }
 
-        public void onMessage(Controller.UserActions action, object data) {
+        public void onMessage(UserActions action, object data) {
             switch (action) {
-                case Controller.UserActions.OBJECT_CLICKED:
+                case UserActions.OBJECT_CLICKED:
                     _selectedItem = data as UIElement;
                     updateView();
                     break;
-                case Controller.UserActions.MOVE_ITEM_BEGIN:
+                case UserActions.MOVE_ITEM_BEGIN:
                     if (utils.Globals.isValidObject(_selectedItem)) {
                         _timer.Start();
                     }
                     break;
-                case Controller.UserActions.MOVE_ITEM_END:
+                case UserActions.MOVE_ITEM_END:
                     _timer.Stop();
                     break;
-                case Controller.UserActions.USER_REFRESH_PROPERTIES:
+                case UserActions.USER_REFRESH_PROPERTIES:
                     updateView();
                     break;
             }

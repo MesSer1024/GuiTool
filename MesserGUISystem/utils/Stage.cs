@@ -11,6 +11,10 @@ namespace MesserGUISystem.utils {
         public static Canvas Area { get; set; }
         private static int _counter = 0;
 
+        //public static bool containsItem(UIElement o) {
+        //    return Area.Children.Contains(o);
+        //}
+
         public static void addItem(UIElement o) {
             Area.Children.Add(o);
             Canvas.SetZIndex(o, _counter++);

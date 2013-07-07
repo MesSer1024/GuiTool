@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MesserControlsLibrary">
-      <HintPath>WpfControlLibrary1\bin\Debug\MesserControlsLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -58,13 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="utils\Bounds.cs" />
+    <Compile Include="commands\CreateMUIElementCommand.cs" />
     <Compile Include="commands\ICommand.cs" />
     <Compile Include="commands\MoveItemEndCommand.cs" />
     <Compile Include="commands\ResizeItemCommand.cs" />
     <Compile Include="logic\Controller.cs" />
     <Compile Include="logic\HistoryManager.cs" />
     <Compile Include="logic\IObserver.cs" />
+    <Compile Include="logic\LayerWindow.cs" />
     <Compile Include="logic\PropertyWindow.cs" />
     <Compile Include="tools\EllipseTool.cs" />
     <Compile Include="tools\MoveTool.cs" />
@@ -73,11 +71,9 @@
     <Compile Include="tools\ITool.cs" />
     <Compile Include="tools\TextTool.cs" />
     <Compile Include="tools\ToolBase.cs" />
-    <Compile Include="utils\Assert.cs" />
     <Compile Include="utils\Globals.cs" />
     <Compile Include="utils\Logger.cs" />
     <Compile Include="utils\Stage.cs" />
-    <Compile Include="utils\Tools.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,6 +113,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wpf_magic\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonUIElements\MesserUI.csproj">
+      <Project>{72CC2703-C02A-4605-ABFD-4DC097C93F3B}</Project>
+      <Name>MesserUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="WpfControlLibrary1\WpfControlLibrary1.csproj">
+      <Project>{E57485EE-7FA2-4E89-9A4C-F88B9BB5ECB7}</Project>
+      <Name>WpfControlLibrary1</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

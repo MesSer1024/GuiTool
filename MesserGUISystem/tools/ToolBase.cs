@@ -7,10 +7,10 @@ using System.Windows.Input;
 
 namespace MesserGUISystem.tools {
     class ToolBase : ITool {
-        public ToolBase(Globals.Tools toolType = Globals.Tools.None) {
+        public ToolBase(Tools toolType = Tools.None) {
             type = toolType;
         }
-        public MesserGUISystem.utils.Globals.Tools type { protected set; get; }
+        public Tools type { protected set; get; }
 
 
         public virtual void lmb(System.Windows.Point point) {
@@ -23,6 +23,10 @@ namespace MesserGUISystem.tools {
 
         public virtual void lmbEnd(System.Windows.Point point) {
             Logger.log("unhandled lmbEnd");
+        }
+
+        public virtual void destroyed() {
+            Logger.log("unhandled destroyed");
         }
 
         public virtual System.Windows.Input.Cursor getCursor() {

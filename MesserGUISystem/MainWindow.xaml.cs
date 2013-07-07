@@ -15,6 +15,7 @@ using MesserGUISystem.utils;
 using MesserGUISystem.tools;
 using MesserGUISystem.logic;
 using System.Text.RegularExpressions;
+using MesserUI;
 
 namespace MesserGUISystem {
     /// <summary>
@@ -24,6 +25,7 @@ namespace MesserGUISystem {
 
         private static PropertyWindow _propertyWindow;
         private static HistoryManager _history;
+        private LayerWindow _layerWindow;
 
         public MainWindow() {
             InitializeComponent();
@@ -33,33 +35,35 @@ namespace MesserGUISystem {
             this.MouseMove += onMouseMove;            
             _propertyWindow = new PropertyWindow(this.properyWindow);
             _history = new HistoryManager();
+            _layerWindow = new LayerWindow(this.layersWindow);
+            //layersWindow.getSelectedlayer().addItem(new MUIFill());
         }
 
         private void moveTool_Click(object sender, RoutedEventArgs e) {
             e.Handled = true;
-            Controller.handle(Controller.UserActions.MOVE_TOOL);
+            Controller.handle(UserActions.MOVE_TOOL);
         }
 
         private void resizeTool_Click(object sender, RoutedEventArgs e) {
             e.Handled = true;
-            Controller.handle(Controller.UserActions.RESIZE_TOOL);
+            Controller.handle(UserActions.RESIZE_TOOL);
         }
 
         private void createRectangle_Click(object sender, RoutedEventArgs e) {
             e.Handled = true;
-            Controller.handle(Controller.UserActions.RECTANGLE_TOOL);
+            Controller.handle(UserActions.RECTANGLE_TOOL);
         }
 
         private void createEllipse_click(object sender, RoutedEventArgs e) {
             e.Handled = true;
-            Controller.handle(Controller.UserActions.ELLIPSE_TOOL);
+            Controller.handle(UserActions.ELLIPSE_TOOL);
         }
 
         private void canvas_mouseDown(object sender, MouseButtonEventArgs e) {
             e.Handled = true;
             Logger.log("lmb press");
             if (e.ChangedButton == MouseButton.Left) {
-                Controller.handle(Controller.UserActions.LMB_DOWN, e);
+                Controller.handle(UserActions.LMB_DOWN, e);
             }
         }
 
@@ -67,7 +71,7 @@ namespace MesserGUISystem {
             e.Handled = true;
             Logger.log("lmb release");
             if (e.ChangedButton == MouseButton.Left) {
-                Controller.handle(Controller.UserActions.LMB_RELEASE, e);
+                Controller.handle(UserActions.LMB_RELEASE, e);
             }
         }
 
@@ -75,7 +79,7 @@ namespace MesserGUISystem {
             e.Handled = true;
             if (e.LeftButton == MouseButtonState.Pressed) {
                 //var pos = e.GetPosition(stage);
-                Controller.handle(Controller.UserActions.LMB_DOWN_MOUSE_MOVED, e);
+                Controller.handle(UserActions.LMB_DOWN_MOUSE_MOVED, e);
             }
         }
 
@@ -89,7 +93,7 @@ namespace MesserGUISystem {
         }
 
         private void DockPanel_LostMouseCapture(object sender, MouseEventArgs e) {
-            var foo = 1;
+            //var foo = 1;
         }
     }
 }
