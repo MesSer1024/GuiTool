@@ -37,8 +37,7 @@ namespace MesserGUISystem.logic {
                     }
                     break;
                 case UserActions.MUIELEMENT_SELECTED_VALID: {
-                        var ele = data as UIElement;
-                        var muiElement = Globals.getMUIElement(ele);
+                        var muiElement = Globals.getMUIElement(Model.SelectedItem);
                         var newLayer = getLayerIndexForItem(muiElement);
                         _content.setSelectedLayer(newLayer);
                     }

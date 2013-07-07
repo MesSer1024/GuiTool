@@ -51,6 +51,7 @@ namespace WpfCommon {
         }
 
         public static void handle(UserActions action, Object e = null) {
+            Logger.log("action ->" + action);
             foreach (var i in _observers) {
                 i.onMessage(action, e);
             }

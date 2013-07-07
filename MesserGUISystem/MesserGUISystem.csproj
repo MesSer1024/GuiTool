@@ -59,6 +59,7 @@
     <Compile Include="logic\HistoryManager.cs" />
     <Compile Include="logic\LayerWindow.cs" />
     <Compile Include="logic\PropertyWindow.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="tools\MoveTool.cs" />
     <Compile Include="tools\SelectTool.cs" />
     <Compile Include="tools\ITool.cs" />
@@ -104,9 +105,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CommonUIElements\MesserUI.csproj">
       <Project>{72CC2703-C02A-4605-ABFD-4DC097C93F3B}</Project>

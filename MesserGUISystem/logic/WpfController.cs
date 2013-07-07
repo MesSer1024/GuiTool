@@ -13,6 +13,7 @@ using MesserUI;
 using WpfCommon.commands;
 using MesserGUISystem.wpf_magic;
 using System.Windows.Shapes;
+using System.Windows.Documents;
 
 namespace MesserGUISystem.logic {
     public class WpfController : IObserver {
@@ -94,6 +95,14 @@ namespace MesserGUISystem.logic {
 
         public void onMessage(UserActions action, object data) {
             switch (action) {
+                case UserActions.MUIELEMENT_DESELECTED:
+                    Globals.clearAdornedElements(Model.SelectedItem);
+                    Model.SelectedItem = null;
+                    break;
+                case UserActions.MUIELEMENT_SELECTED_VALID:
+                    Model.SelectedItem = data as UIElement;
+                    AdornerLayer.GetAdornerLayer(Model.SelectedItem).Add(new SelectionAdorner(Model.SelectedItem));
+                    break;
                 case UserActions.MOVE_TOOL:
                     _instance.moveToolClicked();
                     break;

@@ -33,6 +33,8 @@ namespace WpfCommon.commands
             Element = ele;
             OriginalPosition = original;
             TargetPosition = target;
+
+            execute();
         }
 
         public Point OriginalPosition { get; set; }

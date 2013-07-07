@@ -19,7 +19,6 @@ using WpfCommon.commands;
 namespace MesserGUISystem.logic {
     class PropertyWindow : IObserver {
 
-        private UIElement _selectedItem;
         private PropertyWindowControl _content;
         private Timer _timer;
 
@@ -59,10 +58,10 @@ namespace MesserGUISystem.logic {
 
         private void updateModelWithViewValues() {            
             try {
-                var original = Globals.getBounds(_selectedItem);
+                var original = Globals.getBounds(Model.SelectedItem);
                 var target = new MUIRectangle(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
 
-                Controller.handle(new ResizeItemCommand(_selectedItem as Shape, original, target));
+                Controller.handle(new ResizeItemCommand(Model.SelectedItem as Shape, original, target));
 
             } catch (Exception e) {
                 return;
@@ -71,8 +70,8 @@ namespace MesserGUISystem.logic {
 
         private void updateView() {
             //#TODO: Is this neccessary since we have that on all valid objects
-            if (Globals.isValidObject(_selectedItem)) {
-                var item = _selectedItem;
+            if (Globals.isValidObject(Model.SelectedItem)) {
+                var item = Model.SelectedItem;
                 Globals.updateUi(() => {
                     _content.Visibility = Visibility.Visible;
 
@@ -90,17 +89,13 @@ namespace MesserGUISystem.logic {
         public void onMessage(UserActions action, object data) {
             switch (action) {
                 case UserActions.MUIELEMENT_DESELECTED:
-                    Globals.clearAdornedElements(_selectedItem as UIElement);
-                    _selectedItem = data as UIElement;
                     updateView();
                     break;
                 case UserActions.MUIELEMENT_SELECTED_VALID:
-                    _selectedItem = data as UIElement;
-                    AdornerLayer.GetAdornerLayer(_selectedItem).Add(new SelectionAdorner(_selectedItem));
                     updateView();
                     break;
                 case UserActions.MOVE_ITEM_BEGIN:
-                    if (Globals.isValidObject(_selectedItem)) {
+                    if (Globals.isValidObject(Model.SelectedItem)) {
                         _timer.Start();
                     }
                     break;
