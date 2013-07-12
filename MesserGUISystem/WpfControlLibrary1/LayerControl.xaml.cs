@@ -60,9 +60,21 @@ namespace MesserControlsLibrary {
         }
 
         private void ContentRoot_MouseUp(object sender, MouseButtonEventArgs e) {
-            if(items.Visibility == Visibility.Collapsed) {
+            //if(items.Visibility == Visibility.Collapsed) {
+            //    expand();
+            //} else {
+            //    items.Visibility = Visibility.Collapsed;
+            //}
+        }
+
+        private void onExpandClick(object sender, RoutedEventArgs e)
+        {
+            if (items.Visibility == Visibility.Collapsed)
+            {
                 expand();
-            } else {
+            }
+            else
+            {
                 items.Visibility = Visibility.Collapsed;
             }
         }

@@ -24,6 +24,7 @@ namespace MesserGUISystem.wpf_magic {
         }
 
         protected override void OnRender(DrawingContext drawingContext) {
+            //need to see if bounds are still valid...
             drawingContext.DrawRectangle(_brush, _pen, _bounds);
             drawingContext.DrawText(_text, Globals.getCenter(_bounds));
         }

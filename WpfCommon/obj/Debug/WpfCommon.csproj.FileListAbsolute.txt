@@ -5,3 +5,10 @@ D:\_programmering2\GuiTool\WpfCommon\obj\Debug\WpfCommon.dll
 D:\_programmering2\GuiTool\WpfCommon\obj\Debug\WpfCommon.pdb
 D:\_programmering2\GuiTool\WpfCommon\bin\Debug\MesserUI.dll
 D:\_programmering2\GuiTool\WpfCommon\bin\Debug\MesserUI.pdb
+E:\projects_local\GuiTool\WpfCommon\bin\Debug\WpfCommon.dll
+E:\projects_local\GuiTool\WpfCommon\bin\Debug\WpfCommon.pdb
+E:\projects_local\GuiTool\WpfCommon\bin\Debug\MesserUI.dll
+E:\projects_local\GuiTool\WpfCommon\bin\Debug\MesserUI.pdb
+E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.csprojResolveAssemblyReference.cache
+E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.dll
+E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.pdb

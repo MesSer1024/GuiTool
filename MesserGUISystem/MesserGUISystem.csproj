@@ -115,9 +115,9 @@
       <Project>{78522F18-2D25-41E7-8AC4-ED54562A5E61}</Project>
       <Name>WpfCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="WpfControlLibrary1\WpfControlLibrary1.csproj">
+    <ProjectReference Include="WpfControlLibrary1\MesserControlsLibrary.csproj">
       <Project>{E57485EE-7FA2-4E89-9A4C-F88B9BB5ECB7}</Project>
-      <Name>WpfControlLibrary1</Name>
+      <Name>MesserControlsLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

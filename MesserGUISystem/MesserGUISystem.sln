@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesserGUISystem", "MesserGUISystem.csproj", "{D7CB762F-A40C-47C8-B4AE-0F079A34838E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfControlLibrary1", "WpfControlLibrary1\WpfControlLibrary1.csproj", "{E57485EE-7FA2-4E89-9A4C-F88B9BB5ECB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesserControlsLibrary", "WpfControlLibrary1\MesserControlsLibrary.csproj", "{E57485EE-7FA2-4E89-9A4C-F88B9BB5ECB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MesserUI", "..\CommonUIElements\MesserUI.csproj", "{72CC2703-C02A-4605-ABFD-4DC097C93F3B}"
 EndProject
