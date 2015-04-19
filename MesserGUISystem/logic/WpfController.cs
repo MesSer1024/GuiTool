@@ -162,12 +162,7 @@ namespace MesserGUISystem.logic {
 
             switch (muiType) {
                 case MUITypes.Fill: {
-                        var r = new Rectangle();
-                        r.Width = 250;
-                        r.Height = 250;
-
-                        r.Fill = Brushes.Black;
-
+                        var r = new FillRectangle(new Rect(0,0,250,250));
                         ele = r;
                     }
                     break;

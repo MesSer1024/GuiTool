@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using WpfCommon;
 using WpfCommon.commands;
 using MesserGUISystem.wpf_magic;
+using MesserUI;
 
 
 namespace MesserGUISystem.tools {
@@ -22,7 +23,8 @@ namespace MesserGUISystem.tools {
         private UIElement _currentlyDraggedObject;
         private bool _limbo;
         private SolidColorBrush _solidColorBrush;
-        private Shape _tmpShapeCopy; 
+        private Shape _tmpShapeCopy;
+        private int _originalZIndex;
 
         public MoveTool() {
             type = Tools.Move;
@@ -31,28 +33,52 @@ namespace MesserGUISystem.tools {
 
         public override void lmbBegin(Point point) {
             var foo = Stage.HittestItems(point);
+            Controller.handle(UserActions.MUIELEMENT_DESELECTED);
+            resetMovedObject();
+
             if (Globals.isValidObject(foo)) {
                 removeTemporaryObject();
                 _currentlyDraggedObject = foo as UIElement;
                 _timestampLmbDown = Environment.TickCount;
                 _limbo = true;
-                var asdf = VisualTreeHelper.GetOffset(_currentlyDraggedObject);
-                _startPosition = new Point(asdf.X, asdf.Y);
-                _lmbStartPosition = point;
-            }
+                var bar = _currentlyDraggedObject as IManualMUIObject;
 
-            Controller.handle(UserActions.MUIELEMENT_DESELECTED);
-            if (Globals.isValidObject(foo)) {
+                _startPosition = new Point(bar.MUIBounds.X, bar.MUIBounds.Y);
+                _lmbStartPosition = point;
+                setMovedObject();
+
                 Controller.handle(UserActions.MUIELEMENT_SELECTED_VALID, foo);
             }
             //MainWindow.Stage.Children.ea
             Logger.log("hitTestObject:" + foo);
         }
 
+        private void resetMovedObject()
+        {
+            if (_currentlyDraggedObject != null)
+            {
+                Canvas.SetZIndex(_currentlyDraggedObject, _originalZIndex);
+            }
+            _originalZIndex = 0;
+            _currentlyDraggedObject = null;
+        }
+
+        private void setMovedObject()
+        {
+            _originalZIndex = Canvas.GetZIndex(_currentlyDraggedObject);
+            Canvas.SetZIndex(_currentlyDraggedObject, 10000);
+
+            //_currentlyDraggedObject.InvalidateVisual();
+            //_currentlyDraggedObject.InvalidateArrange();
+            //_currentlyDraggedObject.InvalidateMeasure();
+        }
+
         public override void lmb(Point point) {
             if (_currentlyDraggedObject == null) return;
 
-            if (_limbo) {
+            var bar = _currentlyDraggedObject as IManualMUIObject;
+            if (_limbo)
+            {
                 if (timeout(DELAY_BEFORE_ACTION)) {
                     _limbo = false;
 
@@ -64,7 +90,7 @@ namespace MesserGUISystem.tools {
                     _tmpShapeCopy.StrokeThickness = 1;
                     _tmpShapeCopy.Stroke = Brushes.LightGray;
 
-                    var bounds = Globals.getBounds(_currentlyDraggedObject);
+                    var bounds = bar.MUIBounds;
 
                     _tmpShapeCopy.Width = bounds.Width;
                     _tmpShapeCopy.Height = bounds.Height;
@@ -85,33 +111,45 @@ namespace MesserGUISystem.tools {
                     //only move in "biggest" axis
                     double deltaX = point.X - _lmbStartPosition.X;
                     double deltaY = point.Y - _lmbStartPosition.Y;
+                    var bounds = bar.MUIBounds;
                     if (Globals.isBigger(deltaX, deltaY)) {
-                        Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, WpfController.stageX, WpfController.stageWidth - _currentlyDraggedObject.DesiredSize.Width));
-                        Canvas.SetTop(_currentlyDraggedObject, _startPosition.Y);
+                        bounds.X = clamp(_startPosition.X + deltaX, WpfController.stageX, WpfController.stageWidth - _currentlyDraggedObject.DesiredSize.Width);
+                        bounds.Y = _startPosition.Y;
+                        bar.MUIBounds = bounds;
                     } else {
-                        Canvas.SetLeft(_currentlyDraggedObject, _startPosition.X);
-                        Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, WpfController.stageY, WpfController.stageHeight - _currentlyDraggedObject.DesiredSize.Height));
+                        bounds.X = _startPosition.X;
+                        bounds.Y = clamp(_startPosition.Y + deltaY, WpfController.stageY, WpfController.stageHeight - _currentlyDraggedObject.DesiredSize.Height);
+                        bar.MUIBounds = bounds; 
                     }
                 } else {
+                    var bounds = bar.MUIBounds;
                     double deltaX = point.X - _lmbStartPosition.X;
                     double deltaY = point.Y - _lmbStartPosition.Y;
-                    Canvas.SetLeft(_currentlyDraggedObject, clamp(_startPosition.X + deltaX, WpfController.stageX, int.MaxValue));
-                    Canvas.SetTop(_currentlyDraggedObject, clamp(_startPosition.Y + deltaY, WpfController.stageY, int.MaxValue));
+                    bounds.X = clamp(_startPosition.X + deltaX, WpfController.stageX, int.MaxValue);
+                    bounds.Y = clamp(_startPosition.Y + deltaY, WpfController.stageY, int.MaxValue);
+
+                    bar.MUIBounds = bounds;
                 }
             }
+        }
+
+        Rect castToRect(MUIRectangle r)
+        {
+            return new Rect(r.X, r.Y, r.W, r.H);
         }
 
         public override void destroyed() {
             if (_currentlyDraggedObject != null && _tmpShapeCopy != null) {
                 var b = Globals.getBounds(_tmpShapeCopy);
-                Canvas.SetLeft(_currentlyDraggedObject, b.X);
-                Canvas.SetTop(_currentlyDraggedObject, b.Y);
+                var foo = _currentlyDraggedObject as IManualMUIObject;
+                foo.MUIBounds = castToRect(b);
             }
             removeTemporaryObject();
+            resetMovedObject();
         }
 
         private Shape cloneObject(UIElement used) {
-            if (used is Rectangle) {
+            if (used is FillRectangle) {
                 return new Rectangle();
             } else if (used is Ellipse) {
                 return new Ellipse();
@@ -129,14 +167,12 @@ namespace MesserGUISystem.tools {
 
         public override void lmbEnd(Point point) {
             if (_currentlyDraggedObject == null) return;
-            if (timeout(DELAY_BEFORE_ACTION)) {
-                _limbo = false;
-                var asdf = VisualTreeHelper.GetOffset(_currentlyDraggedObject);
-                Controller.handle(new MoveItemEndCommand(_currentlyDraggedObject, _startPosition, new Point(asdf.X, asdf.Y)));
 
-                removeTemporaryObject();
-                _currentlyDraggedObject = null;
-            }
+            var bar = _currentlyDraggedObject as IManualMUIObject;
+            Controller.handle(new MoveItemEndCommand(_currentlyDraggedObject, _startPosition, new Point(bar.MUIBounds.X, bar.MUIBounds.Y)));
+
+            removeTemporaryObject();
+            resetMovedObject();
         }
 
         private void removeTemporaryObject()

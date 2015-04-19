@@ -66,6 +66,7 @@
     <Compile Include="tools\ToolBase.cs" />
     <Compile Include="wpf_magic\DragCanvas.cs" />
     <Compile Include="wpf_magic\EdgeAdorner.cs" />
+    <Compile Include="wpf_magic\FillRectangle.cs" />
     <Compile Include="wpf_magic\LabelRectangle.cs" />
     <Compile Include="wpf_magic\SelectionAdorner.cs" />
     <Page Include="MainWindow.xaml">

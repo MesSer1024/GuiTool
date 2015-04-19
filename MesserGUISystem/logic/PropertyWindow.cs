@@ -56,12 +56,17 @@ namespace MesserGUISystem.logic {
             updateView();
         }
 
+        MUIRectangle toRect(Rect r)
+        {
+            return new MUIRectangle(r.X, r.Y, r.Width, r.Height);
+        }
+
         private void updateModelWithViewValues() {            
             try {
-                var original = Globals.getBounds(Model.SelectedItem);
+                var original = toRect((Model.SelectedItem as IManualMUIObject).MUIBounds);
                 var target = new MUIRectangle(_content.PositionX_text, _content.PositionY_text, _content.SizeX_text, _content.SizeY_text);
 
-                Controller.handle(new ResizeItemCommand(Model.SelectedItem as Shape, original, target));
+                Controller.handle(new ResizeItemCommand(Model.SelectedItem as IManualMUIObject, original, target));
 
             } catch (Exception e) {
                 return;
@@ -71,15 +76,16 @@ namespace MesserGUISystem.logic {
         private void updateView() {
             //#TODO: Is this neccessary since we have that on all valid objects
             if (Globals.isValidObject(Model.SelectedItem)) {
-                var item = Model.SelectedItem;
+                var item = Model.SelectedItem as IManualMUIObject;
+                
                 Globals.updateUi(() => {
                     _content.Visibility = Visibility.Visible;
 
-                    var foo = VisualTreeHelper.GetOffset(item);
+                    var foo = item.MUIBounds;
                     _content.PositionX = foo.X;
                     _content.PositionY = foo.Y;
-                    _content.SizeX = item.RenderSize.Width;
-                    _content.SizeY = item.RenderSize.Height;
+                    _content.SizeX = foo.Width;
+                    _content.SizeY = foo.Height;
                 });
             } else {
                 Globals.updateUi(() => { _content.Visibility = Visibility.Hidden; });

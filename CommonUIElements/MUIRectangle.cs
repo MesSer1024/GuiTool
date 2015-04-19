@@ -13,8 +13,8 @@ namespace MesserUI
         private double _w;
         private double _h;
 
-        public double X { get { return _x; } }
-        public double Y { get { return _y; } }
+        public double X { get { return _x; } set { _x = value; } }
+        public double Y { get { return _y; } set { _y = value; } }
         public double W { 
             get { return _w; } 
             set {

@@ -16,14 +16,20 @@ namespace WpfCommon.commands
 
         public void execute()
         {
-            Canvas.SetLeft(Element, TargetPosition.X);
-            Canvas.SetTop(Element, TargetPosition.Y);
+            var foo = Element as IManualMUIObject;
+            var bounds = foo.MUIBounds;
+            bounds.X = TargetPosition.X;
+            bounds.Y = TargetPosition.Y;
+            foo.MUIBounds = bounds;
         }
 
         public void revert()
         {
-            Canvas.SetLeft(Element, OriginalPosition.X);
-            Canvas.SetTop(Element, OriginalPosition.Y);
+            var foo = Element as IManualMUIObject;
+            var bounds = foo.MUIBounds;
+            bounds.X = OriginalPosition.X;
+            bounds.Y = OriginalPosition.Y;
+            foo.MUIBounds = bounds;
         }
 
         #endregion

@@ -28,11 +28,11 @@ namespace MesserControlsLibrary {
             ContentRoot.DataContext = this;
         }
 
-        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
+        private void numeric_PreviewInput(object sender, TextCompositionEventArgs e) {
             e.Handled = !IsNumerics(e.Text);
         }
 
-        private void positionX_PreviewKeyDown(object sender, KeyEventArgs e) {
+        private void numeric_PreviewKeyDown(object sender, KeyEventArgs e) {
             if (e.Key == Key.Enter || e.Key == Key.Escape) {
                 if (OnConceptButtonPressedInTextbox != null) {
                     OnConceptButtonPressedInTextbox.Invoke(sender, e);
@@ -41,7 +41,7 @@ namespace MesserControlsLibrary {
             }
         }
 
-        private void positionX_LostMouseCapture(object sender, MouseEventArgs e) {
+        private void numeric_LostMouseCapture(object sender, MouseEventArgs e) {
             if (OnMouseFocusLostFromTextbox != null) {
                 OnMouseFocusLostFromTextbox.Invoke(sender);
                 //e.Handled = true;

@@ -12,3 +12,10 @@ E:\projects_local\GuiTool\WpfCommon\bin\Debug\MesserUI.pdb
 E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.csprojResolveAssemblyReference.cache
 E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.dll
 E:\projects_local\GuiTool\WpfCommon\obj\Debug\WpfCommon.pdb
+D:\_programmering\GuiTool\WpfCommon\bin\Debug\WpfCommon.dll
+D:\_programmering\GuiTool\WpfCommon\bin\Debug\WpfCommon.pdb
+D:\_programmering\GuiTool\WpfCommon\bin\Debug\MesserUI.dll
+D:\_programmering\GuiTool\WpfCommon\bin\Debug\MesserUI.pdb
+D:\_programmering\GuiTool\WpfCommon\obj\Debug\WpfCommon.csprojResolveAssemblyReference.cache
+D:\_programmering\GuiTool\WpfCommon\obj\Debug\WpfCommon.dll
+D:\_programmering\GuiTool\WpfCommon\obj\Debug\WpfCommon.pdb

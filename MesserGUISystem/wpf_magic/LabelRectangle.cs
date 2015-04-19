@@ -16,8 +16,8 @@ namespace MesserGUISystem.wpf_magic {
         private FormattedText _text;
 
         public LabelRectangle(string s, Rect bounds) {
-            _brush = Brushes.White;
-            _pen = new Pen(Brushes.Black, 2.5);
+            _brush = new SolidColorBrush(Color.FromArgb(40, 110,110,110));
+            _pen = new Pen(Brushes.White, 0.25);
             _bounds = bounds;
             var family = new Typeface(new FontFamily("arial"), FontStyles.Normal, FontWeights.SemiBold, FontStretches.SemiCondensed);
             _text = new FormattedText(s, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, family, 14, Brushes.Black);
@@ -34,6 +34,22 @@ namespace MesserGUISystem.wpf_magic {
                 var geo = new RectangleGeometry(new Rect(_bounds.X, _bounds.Y, _bounds.Width, _bounds.Height));
                 return geo; 
             }
+        }
+
+        public Rect MUIBounds
+        {
+            get { return _bounds; }
+            set
+            {
+                _bounds = value;
+                InvalidateVisual();
+                InvalidateMeasure();
+            }
+        }
+
+        public Shape ShapeWPF
+        {
+            get { return this; }
         }
     }
 }
